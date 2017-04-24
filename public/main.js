@@ -7,7 +7,6 @@ syntaxToggle.style.cursor = 'pointer';
  * delet element from database
  */
 del.addEventListener('click', () => {
-
     fetch('inputs', {
         method: 'delete',
         headers: {

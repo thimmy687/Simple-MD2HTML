@@ -8,7 +8,9 @@ body {
 textarea{
     resize: none
 }
-
+span{
+    max-width: 500px;
+}
 .header {
     margin-top: 0;
     margin-right: 0;

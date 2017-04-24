@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "jasmine-node spec --autotest --watch . --color --verbose",
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node server.ts",
+    "dev": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",

@@ -59,6 +59,10 @@ app.post('/inputs', (req, res)=>{
         db.collection('inputs').find().toArray((err,result)=>{
             if(err) return console.log(err);
             history = result;
+            var check = db.collection('inputs').find();
+            if(check.count() > 20){
+                db.collection('inputs').findOneAndDelete({name: 'input'});
+            }
             res.setHeader('Content-Type', 'application/json');
             res.redirect('/');
         });
@@ -67,7 +71,7 @@ app.post('/inputs', (req, res)=>{
 
 app.put('/inputs', (req, res) => {
   db.collection('inputs')
-  .findOneAndUpdate({name: 'Input'}, {
+  .findOneAndUpdate({name: 'input'}, {
     $set: {
       name: req.body.name,
       input: req.body.input,
@@ -83,15 +87,9 @@ app.put('/inputs', (req, res) => {
 });
 
 app.delete('/inputs', (req, res) => {
-    var check = db.collection('inputs').find();
-    if(check.count() > 1){
-        db.collection('inputs').findOneAndDelete({name: req.body.name},(err, result) => {
-            if (err) return res.send(500, err);
+        db.collection('inputs').drop((err, result) => {
+            if (err) return res.status(500).send(err);
             console.log("delete something!")
-            res.send(200, ('Input deleted'))
+            res.status(200).send('Input deleted')
         });
-    }else{
-        res.send(500, ('Last item cannot be deleted!'))
-    }
-    
 });

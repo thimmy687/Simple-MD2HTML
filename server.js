@@ -55,6 +55,10 @@ app.post('/inputs', function (req, res) {
             if (err)
                 return console.log(err);
             history = result;
+            var check = db.collection('inputs').find();
+            if (check.count() > 20) {
+                db.collection('inputs').findOneAndDelete({ name: 'input' });
+            }
             res.setHeader('Content-Type', 'application/json');
             res.redirect('/');
         });
@@ -62,7 +66,7 @@ app.post('/inputs', function (req, res) {
 });
 app.put('/inputs', function (req, res) {
     db.collection('inputs')
-        .findOneAndUpdate({ name: 'Input' }, {
+        .findOneAndUpdate({ name: 'input' }, {
         $set: {
             name: req.body.name,
             input: req.body.input,
@@ -78,17 +82,11 @@ app.put('/inputs', function (req, res) {
     });
 });
 app["delete"]('/inputs', function (req, res) {
-    var check = db.collection('inputs').find();
-    if (check.count() > 1) {
-        db.collection('inputs').findOneAndDelete({ name: req.body.name }, function (err, result) {
-            if (err)
-                return res.send(500, err);
-            console.log("delete something!");
-            res.send(200, ('Input deleted'));
-        });
-    }
-    else {
-        res.send(500, ('Last item cannot be deleted!'));
-    }
+    db.collection('inputs').drop(function (err, result) {
+        if (err)
+            return res.status(500).send(err);
+        console.log("delete something!");
+        res.status(200).send('Input deleted');
+    });
 });
 //# sourceMappingURL=server.js.map
