@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MarkdownToHtml</title>
+  <link rel="stylesheet" href="/css/bootstrap.css" media="screen" charset="utf-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="icon" href="favicon.png"/>
+  <link rel="stylesheet" href="/css/site.css"/>
+</head>
+<body>
+  <div class="content-container">
+    <h1>Simple markdown to html parser</h1>
+    <div class="syntax-box">
+      <h2>Syntax</h2>
+      <hr/>
+        <div>
+          # Heading 1<br>
+          ## Heading 2<br>
+          **Bolt**<br>
+          *Italic*<br>
+          > cite text<br>
+          &nbsp;Paragraph<br>
+        </div>
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">        
+          <div>
+            <h3>Markdown input</h3>
+            <hr/>
+            <form action="/inputs" method="POST">
+              <input placeholder="identifier:" name="name" hidden="hidden" value="input"/>
+              <label>Input text:</label><br/>
+              <textarea class="form-control" cols="25" rows="5" type="text" placeholder="input" name="input"></textarea><br/>
+              <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+          </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div>
+            <h3>Output as string</h3>
+            <hr/>
+            <div class="inputs">
+              <% for(var i=0; i<1; i++) {%>
+                  <span><%= inputs[inputs.length-1].output %></span>
+              <% } %>
+            </div>
+          </div>  
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div>
+            <h3>Output as HTML</h3>
+            <hr/>
+            <div class="inputs">
+              <% for(var i=0; i<1; i++) {%>
+                  <%- inputs[inputs.length-1].output %>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h2>Replace input</h2>
+        <button id="update"> update </button>
+      </div>
+      <div>
+        <h2>Delete inputs</h2>
+        <button id="delete"> Delete first input </button>
+      </div>
+    </div>
+    <div>
+      <h3>history</h3>
+      <ul class="inputs">
+      <% for(var i=0; i<inputs.length; i++) {%>
+        <li class="input">
+          <span>ID:<%= inputs[i].name %></span>
+          <span>Input:<%= inputs[i].input %></span>
+          <span>Output:<%= inputs[i].output %></span>
+        </li>
+      <% } %>
+      </ul>
+    </div>
+  </div>
+  <script src="/js/jquery.js" charset="utf-8"></script>
+  <script src="/js/bootstrap.js" charset="utf-8"></script>
+  <script src="main.js"></script>
+</body>
+</html>

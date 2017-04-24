@@ -1,0 +1,12 @@
+/*site.css*/
+
+.content-container{
+    margin: 50px 100px;
+}
+
+.syntax-box{
+    margin: 0 0 0 45%;
+    border: gainsboro 1px solid;
+    width: 200px;
+    padding: 16px;
+}
