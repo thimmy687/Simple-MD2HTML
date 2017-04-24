@@ -1,7 +1,6 @@
 # Simple Markdown parser
     by Ricardo Krause
-
-
+    
 This is a JavaScript/Typescript markdown to HTML parser with Visual Studio Code
 
 
@@ -11,7 +10,7 @@ This is a JavaScript/Typescript markdown to HTML parser with Visual Studio Code
 
 
 ## Installation
-* Download or clone the projact from [![Github](https://github.frapsoft.com/social/github.png)](https://github.com/thimmy687/Simple-MD2HTML)
+* Download or clone the project from [![Github](https://github.frapsoft.com/social/github.png)](https://github.com/thimmy687/Simple-MD2HTML)
 
 ```
 $ npm install
@@ -20,11 +19,11 @@ $ npm install
 ## Usage
 - Open the project with Visual Studio Code
 - Start the TypeScript-Compiler with [strg]+[shift]+[b]
-- Start node server `$ npm run dev`
+- Start the node server `$ npm run dev`
 - Open the browser on [localhost:3000](http://localhost:3000/)
 
 ## Tests
-- Start the Test-Runner to see unit test results in console
+- Start the Test-Runner to see the unit test results in the console
 ```
 $ npm test
 ```
