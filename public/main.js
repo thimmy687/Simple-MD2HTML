@@ -1,36 +1,36 @@
 //main.js
-var update = document.getElementById('update');
 var del = document.getElementById('delete');
+var syntaxToggle = document.getElementById('syntax-toggle');
+syntaxToggle.style.cursor = 'pointer';
 
-update.addEventListener('click', () => {
+/**
+ * delet element from database
+ */
+del.addEventListener('click', () => {
+
     fetch('inputs', {
-        method: 'put',
-        headers: {'Content-Type': 'application/json'},
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body: JSON.stringify({
-            'name': 'input', 
-            'input': '# Heading1',
-            'output': '<h1> Heading1</h1>'
+            'name': 'input'
         })
+    }).then(res => {
+        window.location.reload(true);
     })
-    .then(res => {
-            if(res.ok) return res.json();
-    })
-    .then(data => {
-            console.log(data);
-            window.location.reload(true);
-        })
-    })
-
-del.addEventListener('click', ()=> {
-  fetch('inputs', {
-    method: 'delete',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        'name': 'Input'
-    })
-  }).then(res=>{
-    window.location.reload(true);      
- })
 })
+
+/**
+ * toogle the syntax bar
+ */
+syntaxToggle.addEventListener('click', () => {
+    var synTable = $('#syntax-table');
+    synTable.toggle();
+    if (synTable.is(':visible')) {
+        $('.toggle-arrow').text('arrow_drop_up');
+    } else {
+        $('.toggle-arrow').text('arrow_drop_down');
+    }
+})
+

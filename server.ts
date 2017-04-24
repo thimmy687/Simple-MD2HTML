@@ -83,9 +83,15 @@ app.put('/inputs', (req, res) => {
 });
 
 app.delete('/inputs', (req, res) => {
-    db.collection('inputs').findOneAndDelete({name: req.body.name},(err, result) => {
-        if (err) return res.send(500, err);
-        console.log("delete something!")
-        res.send('Input deleted')
-    });
+    var check = db.collection('inputs').find();
+    if(check.count() > 1){
+        db.collection('inputs').findOneAndDelete({name: req.body.name},(err, result) => {
+            if (err) return res.send(500, err);
+            console.log("delete something!")
+            res.send(200, ('Input deleted'))
+        });
+    }else{
+        res.send(500, ('Last item cannot be deleted!'))
+    }
+    
 });

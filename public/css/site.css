@@ -1,12 +1,93 @@
 /*site.css*/
 
-.content-container{
-    margin: 50px 100px;
+body {
+    margin: 0;
+    padding: 0;
 }
 
-.syntax-box{
-    margin: 0 0 0 45%;
+textarea{
+    resize: none
+}
+
+.header {
+    margin-top: 0;
+    margin-right: 0;
+    padding-top: 32px;
+    padding-left: 96px;
+    background-color: #2196F3;
+    height: 96px;
+    width: auto;
+}
+
+.header-text {
+    font-size: 32px;
+    font-weight: 400;
+    color: white;
+    white-space: nowrap;
+}
+
+.content-container {
+    margin: 0 96px;
+}
+
+.syntax-box {
     border: gainsboro 1px solid;
-    width: 200px;
-    padding: 16px;
+    width: 100%;
+    min-width: 798px;
+    max-width: 1200px;
+    padding: 0;
+}
+
+.syntax-table {
+    margin: 0;
+    padding: 0;
+}
+
+.syntax-toggle {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    border: gainsboro solid 1px;
+}
+
+.btn-primary{
+    width: 150px;
+}
+
+@media (max-width: 991px) {
+    .syntax-box {
+        border: gainsboro 1px solid;
+        width: 100%;
+        min-width: 573px;
+        max-width: 798px;
+        padding: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-text {
+        font-size: 24px;
+        font-weight: 400;
+        color: white;
+        white-space: nowrap;
+        width: auto;
+    }
+    .syntax-box {
+        border: gainsboro 1px solid;
+        width: 100%;
+        min-width: 288px;
+        max-width: 573px;
+        padding: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        width: 480px;
+    }
+    .syntax-box {
+        border: gainsboro 1px solid;
+        width: 288px;
+        padding: 0;
+    }
 }
