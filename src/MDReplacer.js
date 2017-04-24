@@ -63,6 +63,7 @@ var MDReplacer = (function () {
             }
             result = result.concat(blocks[line]);
         }
+        result = this.combineListElements(result);
         return result;
     };
     /**
@@ -119,6 +120,15 @@ var MDReplacer = (function () {
             return true;
         }
         return false;
+    };
+    /**
+     * combine multiline list elements to one list
+     * @param input: string to parse
+     */
+    MDReplacer.prototype.combineListElements = function (input) {
+        var result = input;
+        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');
+        return result;
     };
     return MDReplacer;
 }());

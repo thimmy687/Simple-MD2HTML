@@ -93,14 +93,14 @@ describe('This project is about making a simple markdown parser.', () => {
         }); 
     });
     describe('check multi line list input', () => {
-        it('input : "# Test text\\n* list item 1\\n* list item 2", \n\t'+ dictString +',\n\toutput: "<h1>Test text</h1><br/><ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul>"', () => {
+        it('input : "# Test text\\n* list item 1\\n* list item 2\\n* list item 3", \n\t'+ dictString +',\n\toutput: "<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>"', () => {
         // Arrange
-        let input ='# Test text\n* list item 1\n* list item 2';
+        let input ='# Test text\n* list item 1\n* list item 2\n* list item 3';
         let markdownReplacer = new MDReplacer();
         // Act
         let result = markdownReplacer.replace(input);
         // Assert
-        expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul>');
+        expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');
         }); 
     });
     describe('check bolt and italic input', () => {

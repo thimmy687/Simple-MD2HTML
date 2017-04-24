@@ -67,6 +67,7 @@ export class MDReplacer {
             }
             result = result.concat(blocks[line]);            
         }
+        result = this.combineListElements(result);
         return result; 
     }
 
@@ -127,5 +128,15 @@ export class MDReplacer {
             return true;
         }
         return false;
+    }
+
+   /**
+    * combine multiline list elements to one list
+    * @param input: string to parse
+    */
+    combineListElements(input: string):string{
+        let result = input;
+        result = result.replace(new RegExp('</li></ul><br/><ul><li>','g'),'</li><br/><li>')     
+        return result;
     }
 }
