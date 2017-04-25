@@ -50,6 +50,7 @@ span{
     font-weight: 600;
     font-size: 18px;
     border: gainsboro solid 1px;
+    background-color: gainsboro
 }
 
 .btn-primary{
