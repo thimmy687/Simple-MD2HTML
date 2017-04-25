@@ -1,20 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const dbc = require(__dirname + '\\src\\DBAccess.js');
-
+const MongoClient = require('mongodb').MongoClient;
+const ps = require(__dirname+ '\\src\\MDReplacer.js');
 //member
-var dbAccess;
+var db;
+
+var parser = new ps.MDReplacer();
 
 // make public folder accessible to public
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname +'/public'));
 app.use("/css", express.static(__dirname + '/public/css'));
 app.use("/js", express.static(__dirname + '/public/js'));
 
-// set port to listen
-app.listen(process.env.PORT || 3000, () => {
-    dbAccess = new dbc.DBAccess('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db');
-    console.log('listening on 3000');
+//database setup
+MongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db', (err,database)=>{
+    // start the server
+    if(err)return console.log(err);
+    db = database;
+    // set port to listen
+    app.listen(process.env.PORT || 3000, ()=>{
+        console.log('listening on 3000');
+    });
 });
 
 // middleware 
@@ -22,30 +29,67 @@ app.set('view engine', 'ejs');
 
 // body-parser extracts the data from the form element and 
 // add them to the body property in the request object
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 //let server read json data
 app.use(bodyParser.json());
 
 // routing
-app.get('/', (req, res) => {
-    let result = dbAccess.getAllInputs();
-    if (result == "500") { res.status(500).redirect('/'); }
-    let json = JSON.stringify(result);
-    console.log(json);
-    res.render('index.ejs', { inputs: json });
+app.get('/', (req, res)=>{
+    db.collection('inputs').find().toArray((err, result)=>{
+        if(err) return console.log(err);
+        if(result === null){ result = "test";}
+        res.render('index.ejs', {inputs: result});    
+    });
 });
 
-app.post('/inputs', (req, res) => {
-    let result = dbAccess.addNewInput(req.body);
-    if (result == "500") { res.status(500).redirect('/'); }
-    let json = JSON.stringify(result);
-    console.log(json);
-    res.render('index.ejs', { inputs: json });
+app.post('/inputs', (req, res)=>{
+    var parsedText = parser.replace(req.body.input+'');    
+    var toSave = 
+        {
+            name: req.body.name,
+            input: req.body.input,
+            output: parsedText
+        }
+    var history;
+ 
+    db.collection('inputs').save(toSave, (err,result)=>{
+        if(err)return console.log(err);
+        console.log('saved to database');
+        db.collection('inputs').find().toArray((err,result)=>{
+            if(err) return console.log(err);
+            history = result;
+            var check = db.collection('inputs').find();
+            if(check.count() > 20){
+                db.collection('inputs').findOneAndDelete({name: 'input'});
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.redirect('/');
+        });
+    });
+});
+
+app.put('/inputs', (req, res) => {
+  db.collection('inputs')
+  .findOneAndUpdate({name: 'input'}, {
+    $set: {
+      name: req.body.name,
+      input: req.body.input,
+      output: req.body.output
+    }
+  }, {
+    sort: {_id: -1},
+    upsert: true
+  }, (err, result) => {
+    if (err) return res.send(err)
+    res.send(result)
+  });
 });
 
 app.delete('/inputs', (req, res) => {
-    var result = dbAccess.deleteAll();
-    if (result == 200) return res.status(200).send('Input deleted');
-    res.status(500).send('Unexpected error!');
+        db.collection('inputs').drop((err, result) => {
+            if (err) return res.status(500).send(err);
+            console.log("delete something!")
+            res.status(200).send('Input deleted')
+        });
 });
