@@ -11,22 +11,22 @@ This is a JavaScript/Typescript markdown to HTML parser with Visual Studio Code
 
 ## Installation
 * Download or clone the project from [![Github](https://github.frapsoft.com/social/github.png)](https://github.com/thimmy687/Simple-MD2HTML)
-
-```
-$ npm install
-```
+* Run `$ npm install` to install necessary packages
 
 ## Usage
-- Open the project with Visual Studio Code
-- Start the TypeScript-Compiler with [strg]+[shift]+[b]
-- Start the node server `$ npm run dev`
-- Open the browser on [localhost:3000](http://localhost:3000/)
+* Go to the directory of from the project
+* Start the node server with `$ npm start`
 
 ## Tests
 - Start the Test-Runner to see the unit test results in the console
 ```
 $ npm test
 ```
+## Contribution
+- Open the project with Visual Studio Code
+- Start the TypeScript-Compiler with [strg]+[shift]+[b]
+- Start the node server `$ npm run dev`
+- Open the browser on [localhost:3000](http://localhost:3000/)
 
 ### Liecence
 no licence
