@@ -30,7 +30,200 @@
     }
   },
   {
+    "__docId__": 2,
+    "kind": "file",
+    "name": "src/server.js",
+    "content": "var express = require('express');\r\nvar bodyParser = require('body-parser');\r\nvar app = express();\r\nvar MongoClient = require('mongodb').MongoClient;\r\nvar ps = require(__dirname + '\\\\MDReplacer.js');\r\nvar path = require('path');\r\n//member\r\nvar db;\r\nvar parser = new ps.MDReplacer();\r\n// make public folder accessible to public\r\napp.use(express.static(path.resolve('./public')));\r\napp.use(\"/css\", express.static(path.resolve('./public/css')));\r\napp.use(\"/js\", express.static(path.resolve('./public/js')));\r\n//database setup\r\nMongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db', function (err, database) {\r\n    // start the server\r\n    if (err)\r\n        return console.log('DB-CONNECTION-ERR: ' + err);\r\n    db = database;\r\n    // set port to listen\r\n    app.listen(process.env.PORT || 3000, function () {\r\n        console.log('listening on 3000');\r\n    });\r\n    //clean history on startup\r\n    db.collection('inputs').drop(function (err, result) {\r\n        if (err)\r\n            return console.log('WARN:' + err);\r\n        console.log(\"INFO: history clean!\");\r\n    });\r\n});\r\n// middleware \r\napp.set('view engine', 'ejs');\r\n// body-parser extracts the data from the form element and \r\n// add them to the body property in the request object\r\napp.use(bodyParser.urlencoded({ extended: true }));\r\n//let server read json data\r\napp.use(bodyParser.json());\r\n// routing\r\napp.get('/', function (req, res) {\r\n    db.collection('inputs').find().toArray(function (err, result) {\r\n        if (err)\r\n            return console.log(err);\r\n        if (result === null) {\r\n            result = \"test\";\r\n        }\r\n        res.render('index.ejs', { inputs: result });\r\n    });\r\n});\r\napp.post('/inputs', function (req, res) {\r\n    var parsedText = parser.replace(req.body.input + '');\r\n    var toSave = {\r\n        name: req.body.name,\r\n        input: req.body.input,\r\n        output: parsedText\r\n    };\r\n    var history;\r\n    db.collection('inputs').save(toSave, function (err, result) {\r\n        if (err)\r\n            return console.log('SAVE-DB-ERR:' + err);\r\n        console.log('INFO: saved to database');\r\n        db.collection('inputs').find().toArray(function (err, result) {\r\n            if (err)\r\n                return console.log('FIND-ON-DB-ERR: ' + err);\r\n            history = result;\r\n            res.setHeader('Content-Type', 'application/json');\r\n            res.redirect('/');\r\n        });\r\n    });\r\n});\r\napp.put('/inputs', function (req, res) {\r\n    db.collection('inputs')\r\n        .findOneAndUpdate({ name: 'input' }, {\r\n        $set: {\r\n            name: req.body.name,\r\n            input: req.body.input,\r\n            output: req.body.output\r\n        }\r\n    }, {\r\n        sort: { _id: -1 },\r\n        upsert: true\r\n    }, function (err, result) {\r\n        if (err)\r\n            return res.send(err);\r\n        res.send(result);\r\n    });\r\n});\r\napp[\"delete\"]('/inputs', function (req, res) {\r\n    db.collection('inputs').drop(function (err, result) {\r\n        if (err)\r\n            return res.status(500).send(err);\r\n        console.log(\"INFO: history clean!\");\r\n        res.status(200).send(\"INFO: history clean!\");\r\n    });\r\n});\r\n//# sourceMappingURL=server.js.map",
+    "static": true,
+    "longname": "src/server.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
     "__docId__": 3,
+    "kind": "variable",
+    "name": "express",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~express",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 4,
+    "kind": "variable",
+    "name": "bodyParser",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~bodyParser",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 2,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 5,
+    "kind": "variable",
+    "name": "app",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~app",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "variable",
+    "name": "MongoClient",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~MongoClient",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "variable",
+    "name": "ps",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~ps",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 8,
+    "kind": "variable",
+    "name": "path",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~path",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 6,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 9,
+    "kind": "variable",
+    "name": "parser",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~parser",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 11,
     "kind": "external",
     "name": "Infinity",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
@@ -42,7 +235,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 4,
+    "__docId__": 12,
     "kind": "external",
     "name": "NaN",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
@@ -54,7 +247,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 5,
+    "__docId__": 13,
     "kind": "external",
     "name": "undefined",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
@@ -66,7 +259,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 6,
+    "__docId__": 14,
     "kind": "external",
     "name": "null",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
@@ -78,7 +271,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 7,
+    "__docId__": 15,
     "kind": "external",
     "name": "Object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -90,7 +283,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 8,
+    "__docId__": 16,
     "kind": "external",
     "name": "object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -102,7 +295,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 9,
+    "__docId__": 17,
     "kind": "external",
     "name": "Function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -114,7 +307,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 10,
+    "__docId__": 18,
     "kind": "external",
     "name": "function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -126,7 +319,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 11,
+    "__docId__": 19,
     "kind": "external",
     "name": "Boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -138,7 +331,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 12,
+    "__docId__": 20,
     "kind": "external",
     "name": "boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -150,7 +343,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 13,
+    "__docId__": 21,
     "kind": "external",
     "name": "Symbol",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
@@ -162,7 +355,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 14,
+    "__docId__": 22,
     "kind": "external",
     "name": "Error",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
@@ -174,7 +367,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 15,
+    "__docId__": 23,
     "kind": "external",
     "name": "EvalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
@@ -186,7 +379,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 16,
+    "__docId__": 24,
     "kind": "external",
     "name": "InternalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
@@ -198,7 +391,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 17,
+    "__docId__": 25,
     "kind": "external",
     "name": "RangeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
@@ -210,7 +403,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 18,
+    "__docId__": 26,
     "kind": "external",
     "name": "ReferenceError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
@@ -222,7 +415,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 19,
+    "__docId__": 27,
     "kind": "external",
     "name": "SyntaxError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
@@ -234,7 +427,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 20,
+    "__docId__": 28,
     "kind": "external",
     "name": "TypeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
@@ -246,7 +439,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 21,
+    "__docId__": 29,
     "kind": "external",
     "name": "URIError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
@@ -258,7 +451,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 22,
+    "__docId__": 30,
     "kind": "external",
     "name": "Number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -270,7 +463,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 23,
+    "__docId__": 31,
     "kind": "external",
     "name": "number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -282,7 +475,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 24,
+    "__docId__": 32,
     "kind": "external",
     "name": "Date",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
@@ -294,7 +487,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 25,
+    "__docId__": 33,
     "kind": "external",
     "name": "String",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -306,7 +499,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 26,
+    "__docId__": 34,
     "kind": "external",
     "name": "string",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -318,7 +511,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 27,
+    "__docId__": 35,
     "kind": "external",
     "name": "RegExp",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
@@ -330,7 +523,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 28,
+    "__docId__": 36,
     "kind": "external",
     "name": "Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
@@ -342,7 +535,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 29,
+    "__docId__": 37,
     "kind": "external",
     "name": "Int8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
@@ -354,7 +547,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 30,
+    "__docId__": 38,
     "kind": "external",
     "name": "Uint8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
@@ -366,7 +559,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 31,
+    "__docId__": 39,
     "kind": "external",
     "name": "Uint8ClampedArray",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
@@ -378,7 +571,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 32,
+    "__docId__": 40,
     "kind": "external",
     "name": "Int16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
@@ -390,7 +583,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 33,
+    "__docId__": 41,
     "kind": "external",
     "name": "Uint16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
@@ -402,7 +595,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 34,
+    "__docId__": 42,
     "kind": "external",
     "name": "Int32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
@@ -414,7 +607,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 35,
+    "__docId__": 43,
     "kind": "external",
     "name": "Uint32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
@@ -426,7 +619,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 36,
+    "__docId__": 44,
     "kind": "external",
     "name": "Float32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
@@ -438,7 +631,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 37,
+    "__docId__": 45,
     "kind": "external",
     "name": "Float64Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
@@ -450,7 +643,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 38,
+    "__docId__": 46,
     "kind": "external",
     "name": "Map",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
@@ -462,7 +655,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 39,
+    "__docId__": 47,
     "kind": "external",
     "name": "Set",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
@@ -474,7 +667,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 40,
+    "__docId__": 48,
     "kind": "external",
     "name": "WeakMap",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
@@ -486,7 +679,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 41,
+    "__docId__": 49,
     "kind": "external",
     "name": "WeakSet",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
@@ -498,7 +691,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 42,
+    "__docId__": 50,
     "kind": "external",
     "name": "ArrayBuffer",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
@@ -510,7 +703,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 43,
+    "__docId__": 51,
     "kind": "external",
     "name": "DataView",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
@@ -522,7 +715,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 44,
+    "__docId__": 52,
     "kind": "external",
     "name": "JSON",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
@@ -534,7 +727,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 45,
+    "__docId__": 53,
     "kind": "external",
     "name": "Promise",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
@@ -546,7 +739,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 46,
+    "__docId__": 54,
     "kind": "external",
     "name": "Generator",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
@@ -558,7 +751,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 47,
+    "__docId__": 55,
     "kind": "external",
     "name": "GeneratorFunction",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
@@ -570,7 +763,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 48,
+    "__docId__": 56,
     "kind": "external",
     "name": "Reflect",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
@@ -582,7 +775,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 49,
+    "__docId__": 57,
     "kind": "external",
     "name": "Proxy",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
@@ -595,7 +788,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 51,
+    "__docId__": 59,
     "kind": "external",
     "name": "CanvasRenderingContext2D",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
@@ -607,7 +800,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 52,
+    "__docId__": 60,
     "kind": "external",
     "name": "DocumentFragment",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
@@ -619,7 +812,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 53,
+    "__docId__": 61,
     "kind": "external",
     "name": "Element",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
@@ -631,7 +824,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 54,
+    "__docId__": 62,
     "kind": "external",
     "name": "Event",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
@@ -643,7 +836,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 55,
+    "__docId__": 63,
     "kind": "external",
     "name": "Node",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
@@ -655,7 +848,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 56,
+    "__docId__": 64,
     "kind": "external",
     "name": "NodeList",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
@@ -667,7 +860,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 57,
+    "__docId__": 65,
     "kind": "external",
     "name": "XMLHttpRequest",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
@@ -679,7 +872,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 58,
+    "__docId__": 66,
     "kind": "external",
     "name": "AudioContext",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
@@ -692,7 +885,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 59,
+    "__docId__": 67,
     "kind": "testFile",
     "name": "spec/MD2HTML.spec.js",
     "content": "\"use strict\";\r\nexports.__esModule = true;\r\nvar MDReplacer_1 = require(\"./../src/MDReplacer\");\r\nvar replacerDict = new MDReplacer_1.MDReplacer().dictionary;\r\nvar dictString = 'dict' + replacerDict.toString();\r\n/**\r\n * this are test for the mardown replacer\r\n * @test {MDReplacer}\r\n */\r\ndescribe('This project is about making a simple markdown parser.', function () {\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check empty input', function () {\r\n        it('input : \"\",' + dictString + ' , output: \"\"', function () {\r\n            // Arrange\r\n            var input = '';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('');\r\n        });\r\n    });\r\n    /**\r\n    * @test {MDReplacer#replace}\r\n    */\r\n    describe('check simple input of each type', function () {\r\n        it('input : \"# Heading1\", ' + dictString + ', output: \"<h1>Heading1</h1>\"', function () {\r\n            // Arrange\r\n            var input = '# Heading1';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Heading1</h1>');\r\n        });\r\n        it('input : \"## Heading2\", ' + dictString + ', output: \"<h2>Heading2</h2>\"', function () {\r\n            // Arrange\r\n            var input = '## Heading2';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h2>Heading2</h2>');\r\n        });\r\n        it('input : \"**BoldText**\", ' + dictString + ', output: \"<b>BoldText</b>\"', function () {\r\n            // Arrange\r\n            var input = '**BoldText**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>BoldText</b>');\r\n        });\r\n        it('input : \"*ItalicText*\", ' + dictString + ', output: \"<i>ItalicText</i>\"', function () {\r\n            // Arrange\r\n            var input = '*ItalicText*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<i>ItalicText</i>');\r\n        });\r\n        it('input : \"* List\", ' + dictString + ', output: \"<ul><li>List</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '* List';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>List</li></ul>');\r\n        });\r\n        it('input : \">Cite text\", ' + dictString + ', output: \"<blockquote><p>Cite text</p></blockquote>\"', function () {\r\n            // Arrange\r\n            var input = '>Cite text';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<blockquote><p>Cite text</p></blockquote>');\r\n        });\r\n        it('input : \" Paragraph\", ' + dictString + ', output: \"<p>Paragraph</p>\"', function () {\r\n            // Arrange\r\n            var input = ' Paragraph';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<p>Paragraph</p>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line input', function () {\r\n        it('input : \"# Test text \\\\n * with list\", ' + dictString + ', output: \"<h1>Test text</h1><br/><ul><li>with list</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text \\n* with list';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text </h1><br/><ul><li>with list</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line list input', function () {\r\n        it('input : \"# Test text\\\\n* list item 1\\\\n* list item 2\\\\n* list item 3\", \\n\\t' + dictString + ',\\n\\toutput: \"<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text\\n* list item 1\\n* list item 2\\n* list item 3';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check bolt and italic input', function () {\r\n        it('input : \"**Test** *text*\", \\n\\t' + dictString + ',\\n\\toutput: \"<b>Test</b> <i>text</i>\"', function () {\r\n            // Arrange\r\n            var input = '**Test** *text*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b> <i>text</i>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceDouble}\r\n     */\r\n    describe('MDReplacer replace double tags', function () {\r\n        it('input: \"**Test**, \\n\\toutput: \"<b>Test</b>\"', function () {\r\n            // Arrange\r\n            var input = '**Test**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            var key = '**';\r\n            // Act\r\n            var result = markdownReplacer.replaceDouble(input, key);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#startsWith}\r\n     */\r\n    describe('MDReplacer check startWith method', function () {\r\n        describe('method result true', function () {\r\n            it('input: \"> test\",\\n\\toutput: \"true\"', function () {\r\n                // Arrange\r\n                var input = '> test';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '>';\r\n                // Act\r\n                var result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(true);\r\n            });\r\n        });\r\n        describe('method fails', function () {\r\n            it('input: \" test\",\\n\\toutput: \"true\"', function () {\r\n                // Arrange\r\n                var input = ' test';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '>';\r\n                // Act\r\n                var result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(false);\r\n            });\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#combineMultiLineTags}\r\n     */\r\n    describe('MDReplacer combineMultiLineTags', function () {\r\n        it('input: \"<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>\",\\n\\toutput: \"<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            var key = '>';\r\n            // Act\r\n            var result = markdownReplacer.combineMultiLineTags(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceKey}\r\n     */\r\n    describe('MDReplacer check all different keys', function () {\r\n        describe('check heading 1', function () {\r\n            it('input: \"# \",\\n\\toutput: \"<h1></h1>\"', function () {\r\n                // Arrange\r\n                var input = '# ';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '# ';\r\n                // Act\r\n                var result = markdownReplacer.replaceKey(input, key);\r\n                // Assert\r\n                expect(result).toBe('<h1></h1>');\r\n            });\r\n        }),\r\n            describe('check heading 2', function () {\r\n                it('input: \"## \",\\n\\toutput: \"<h2></h2>\"', function () {\r\n                    // Arrange\r\n                    var input = '## ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '## ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<h2></h2>');\r\n                });\r\n            }),\r\n            describe('check list', function () {\r\n                it('input: \"* \",\\n\\toutput: \"<ul><li></li></ul>\"', function () {\r\n                    // Arrange\r\n                    var input = '* ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '* ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<ul><li></li></ul>');\r\n                });\r\n            }),\r\n            describe('check bold', function () {\r\n                it('input: \"**** \",\\n\\toutput: \"<b></b>\"', function () {\r\n                    // Arrange\r\n                    var input = '****';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '**';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<b></b>');\r\n                });\r\n            }),\r\n            describe('check italic', function () {\r\n                it('input: \"**\",\\n\\toutput: \"<i></i>\"', function () {\r\n                    // Arrange\r\n                    var input = '**';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '**';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<i></i>');\r\n                });\r\n            }),\r\n            describe('check cite text', function () {\r\n                it('input: \">\",\\n\\toutput: \"<blockquote><p></p></blockquote>\"', function () {\r\n                    // Arrange\r\n                    var input = '>';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '>';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<blockquote><p></p></blockquote>');\r\n                });\r\n            }),\r\n            describe('check paragraph', function () {\r\n                it('input: \" \",\\n\\toutput: \"<p></p>\"', function () {\r\n                    // Arrange\r\n                    var input = ' ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = ' ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<p></p>');\r\n                });\r\n            });\r\n    });\r\n});\r\n//# sourceMappingURL=MD2HTML.spec.js.map",
@@ -703,7 +896,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 60,
+    "__docId__": 68,
     "kind": "testDescribe",
     "name": "describe0",
     "testId": 0,
@@ -725,7 +918,7 @@
     ]
   },
   {
-    "__docId__": 61,
+    "__docId__": 69,
     "kind": "testDescribe",
     "name": "describe1",
     "testId": 1,
@@ -747,7 +940,7 @@
     ]
   },
   {
-    "__docId__": 62,
+    "__docId__": 70,
     "kind": "testIt",
     "name": "it2",
     "testId": 2,
@@ -759,7 +952,7 @@
     "lineNumber": 15
   },
   {
-    "__docId__": 63,
+    "__docId__": 71,
     "kind": "testDescribe",
     "name": "describe3",
     "testId": 3,
@@ -781,7 +974,7 @@
     ]
   },
   {
-    "__docId__": 64,
+    "__docId__": 72,
     "kind": "testIt",
     "name": "it4",
     "testId": 4,
@@ -793,7 +986,7 @@
     "lineNumber": 29
   },
   {
-    "__docId__": 65,
+    "__docId__": 73,
     "kind": "testIt",
     "name": "it5",
     "testId": 5,
@@ -805,7 +998,7 @@
     "lineNumber": 38
   },
   {
-    "__docId__": 66,
+    "__docId__": 74,
     "kind": "testIt",
     "name": "it6",
     "testId": 6,
@@ -817,7 +1010,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 67,
+    "__docId__": 75,
     "kind": "testIt",
     "name": "it7",
     "testId": 7,
@@ -829,7 +1022,7 @@
     "lineNumber": 56
   },
   {
-    "__docId__": 68,
+    "__docId__": 76,
     "kind": "testIt",
     "name": "it8",
     "testId": 8,
@@ -841,7 +1034,7 @@
     "lineNumber": 65
   },
   {
-    "__docId__": 69,
+    "__docId__": 77,
     "kind": "testIt",
     "name": "it9",
     "testId": 9,
@@ -853,7 +1046,7 @@
     "lineNumber": 74
   },
   {
-    "__docId__": 70,
+    "__docId__": 78,
     "kind": "testIt",
     "name": "it10",
     "testId": 10,
@@ -865,7 +1058,7 @@
     "lineNumber": 83
   },
   {
-    "__docId__": 71,
+    "__docId__": 79,
     "kind": "testDescribe",
     "name": "describe11",
     "testId": 11,
@@ -887,7 +1080,7 @@
     ]
   },
   {
-    "__docId__": 72,
+    "__docId__": 80,
     "kind": "testIt",
     "name": "it12",
     "testId": 12,
@@ -899,7 +1092,7 @@
     "lineNumber": 97
   },
   {
-    "__docId__": 73,
+    "__docId__": 81,
     "kind": "testDescribe",
     "name": "describe13",
     "testId": 13,
@@ -921,7 +1114,7 @@
     ]
   },
   {
-    "__docId__": 74,
+    "__docId__": 82,
     "kind": "testIt",
     "name": "it14",
     "testId": 14,
@@ -933,7 +1126,7 @@
     "lineNumber": 111
   },
   {
-    "__docId__": 75,
+    "__docId__": 83,
     "kind": "testDescribe",
     "name": "describe15",
     "testId": 15,
@@ -955,7 +1148,7 @@
     ]
   },
   {
-    "__docId__": 76,
+    "__docId__": 84,
     "kind": "testIt",
     "name": "it16",
     "testId": 16,
@@ -967,7 +1160,7 @@
     "lineNumber": 125
   },
   {
-    "__docId__": 77,
+    "__docId__": 85,
     "kind": "testDescribe",
     "name": "describe17",
     "testId": 17,
@@ -989,7 +1182,7 @@
     ]
   },
   {
-    "__docId__": 78,
+    "__docId__": 86,
     "kind": "testIt",
     "name": "it18",
     "testId": 18,
@@ -1002,7 +1195,7 @@
     "lineNumber": 139
   },
   {
-    "__docId__": 79,
+    "__docId__": 87,
     "kind": "testDescribe",
     "name": "describe19",
     "testId": 19,
@@ -1024,7 +1217,7 @@
     ]
   },
   {
-    "__docId__": 80,
+    "__docId__": 88,
     "kind": "testDescribe",
     "name": "describe20",
     "testId": 20,
@@ -1037,7 +1230,7 @@
     "lineNumber": 154
   },
   {
-    "__docId__": 81,
+    "__docId__": 89,
     "kind": "testIt",
     "name": "it21",
     "testId": 21,
@@ -1050,7 +1243,7 @@
     "lineNumber": 155
   },
   {
-    "__docId__": 82,
+    "__docId__": 90,
     "kind": "testDescribe",
     "name": "describe22",
     "testId": 22,
@@ -1063,7 +1256,7 @@
     "lineNumber": 166
   },
   {
-    "__docId__": 83,
+    "__docId__": 91,
     "kind": "testIt",
     "name": "it23",
     "testId": 23,
@@ -1076,7 +1269,7 @@
     "lineNumber": 167
   },
   {
-    "__docId__": 84,
+    "__docId__": 92,
     "kind": "testDescribe",
     "name": "describe24",
     "testId": 24,
@@ -1098,7 +1291,7 @@
     ]
   },
   {
-    "__docId__": 85,
+    "__docId__": 93,
     "kind": "testIt",
     "name": "it25",
     "testId": 25,
@@ -1111,7 +1304,7 @@
     "lineNumber": 183
   },
   {
-    "__docId__": 86,
+    "__docId__": 94,
     "kind": "testDescribe",
     "name": "describe26",
     "testId": 26,
@@ -1133,7 +1326,7 @@
     ]
   },
   {
-    "__docId__": 87,
+    "__docId__": 95,
     "kind": "testIt",
     "name": "it27",
     "testId": 27,
@@ -1146,7 +1339,7 @@
     "lineNumber": 199
   },
   {
-    "__docId__": 88,
+    "__docId__": 96,
     "kind": "testIt",
     "name": "it28",
     "testId": 28,
@@ -1159,7 +1352,7 @@
     "lineNumber": 211
   },
   {
-    "__docId__": 89,
+    "__docId__": 97,
     "kind": "testIt",
     "name": "it29",
     "testId": 29,
@@ -1172,7 +1365,7 @@
     "lineNumber": 223
   },
   {
-    "__docId__": 90,
+    "__docId__": 98,
     "kind": "testIt",
     "name": "it30",
     "testId": 30,
@@ -1185,7 +1378,7 @@
     "lineNumber": 235
   },
   {
-    "__docId__": 91,
+    "__docId__": 99,
     "kind": "testIt",
     "name": "it31",
     "testId": 31,
@@ -1198,7 +1391,7 @@
     "lineNumber": 247
   },
   {
-    "__docId__": 92,
+    "__docId__": 100,
     "kind": "testIt",
     "name": "it32",
     "testId": 32,
@@ -1211,7 +1404,7 @@
     "lineNumber": 259
   },
   {
-    "__docId__": 93,
+    "__docId__": 101,
     "kind": "testIt",
     "name": "it33",
     "testId": 33,

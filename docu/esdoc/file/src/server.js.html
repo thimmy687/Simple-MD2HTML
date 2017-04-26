@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/server.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MongoClient">MongoClient</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-app">app</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-bodyParser">bodyParser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-express">express</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-parser">parser</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ps">ps</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/server.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var express = require(&apos;express&apos;);
+var bodyParser = require(&apos;body-parser&apos;);
+var app = express();
+var MongoClient = require(&apos;mongodb&apos;).MongoClient;
+var ps = require(__dirname + &apos;\\MDReplacer.js&apos;);
+var path = require(&apos;path&apos;);
+//member
+var db;
+var parser = new ps.MDReplacer();
+// make public folder accessible to public
+app.use(express.static(path.resolve(&apos;./public&apos;)));
+app.use(&quot;/css&quot;, express.static(path.resolve(&apos;./public/css&apos;)));
+app.use(&quot;/js&quot;, express.static(path.resolve(&apos;./public/js&apos;)));
+//database setup
+MongoClient.connect(&apos;mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db&apos;, function (err, database) {
+    // start the server
+    if (err)
+        return console.log(&apos;DB-CONNECTION-ERR: &apos; + err);
+    db = database;
+    // set port to listen
+    app.listen(process.env.PORT || 3000, function () {
+        console.log(&apos;listening on 3000&apos;);
+    });
+    //clean history on startup
+    db.collection(&apos;inputs&apos;).drop(function (err, result) {
+        if (err)
+            return console.log(&apos;WARN:&apos; + err);
+        console.log(&quot;INFO: history clean!&quot;);
+    });
+});
+// middleware 
+app.set(&apos;view engine&apos;, &apos;ejs&apos;);
+// body-parser extracts the data from the form element and 
+// add them to the body property in the request object
+app.use(bodyParser.urlencoded({ extended: true }));
+//let server read json data
+app.use(bodyParser.json());
+// routing
+app.get(&apos;/&apos;, function (req, res) {
+    db.collection(&apos;inputs&apos;).find().toArray(function (err, result) {
+        if (err)
+            return console.log(err);
+        if (result === null) {
+            result = &quot;test&quot;;
+        }
+        res.render(&apos;index.ejs&apos;, { inputs: result });
+    });
+});
+app.post(&apos;/inputs&apos;, function (req, res) {
+    var parsedText = parser.replace(req.body.input + &apos;&apos;);
+    var toSave = {
+        name: req.body.name,
+        input: req.body.input,
+        output: parsedText
+    };
+    var history;
+    db.collection(&apos;inputs&apos;).save(toSave, function (err, result) {
+        if (err)
+            return console.log(&apos;SAVE-DB-ERR:&apos; + err);
+        console.log(&apos;INFO: saved to database&apos;);
+        db.collection(&apos;inputs&apos;).find().toArray(function (err, result) {
+            if (err)
+                return console.log(&apos;FIND-ON-DB-ERR: &apos; + err);
+            history = result;
+            res.setHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+            res.redirect(&apos;/&apos;);
+        });
+    });
+});
+app.put(&apos;/inputs&apos;, function (req, res) {
+    db.collection(&apos;inputs&apos;)
+        .findOneAndUpdate({ name: &apos;input&apos; }, {
+        $set: {
+            name: req.body.name,
+            input: req.body.input,
+            output: req.body.output
+        }
+    }, {
+        sort: { _id: -1 },
+        upsert: true
+    }, function (err, result) {
+        if (err)
+            return res.send(err);
+        res.send(result);
+    });
+});
+app[&quot;delete&quot;](&apos;/inputs&apos;, function (req, res) {
+    db.collection(&apos;inputs&apos;).drop(function (err, result) {
+        if (err)
+            return res.status(500).send(err);
+        console.log(&quot;INFO: history clean!&quot;);
+        res.status(200).send(&quot;INFO: history clean!&quot;);
+    });
+});
+//# sourceMappingURL=server.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
