@@ -5,12 +5,14 @@ body {
     padding: 0;
 }
 
-textarea{
+textarea {
     resize: none
 }
-span{
+
+span {
     max-width: 500px;
 }
+
 .header {
     margin-top: 0;
     margin-right: 0;
@@ -53,8 +55,9 @@ span{
     background-color: gainsboro
 }
 
-.btn-primary{
+.btn-primary {
     width: 150px;
+    background-color: #2196F3;
 }
 
 @media (max-width: 991px) {
