@@ -1,5 +1,5 @@
 {
-  "name": "MDTOHTML",
+  "name": "markdowntohtmparser",
   "version": "1.0.0",
   "description": "simple md to htm parser",
   "main": "server.js",
