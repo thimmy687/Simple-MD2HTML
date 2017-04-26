@@ -1,5 +1,11 @@
 window.esdocSearchIndex = [
   [
+    "markdowntohtmlparser/src/mdreplacer.js~mdreplacer",
+    "variable/index.html#static-variable-MDReplacer",
+    "<span>MDReplacer</span> <span class=\"search-result-import-path\">markdowntohtmlparser/src/MDReplacer.js</span>",
+    "variable"
+  ],
+  [
     "builtinexternal/ecmascriptexternal.js~array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
     "BuiltinExternal/ECMAScriptExternal.js~Array",
@@ -342,7 +348,7 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "mdreplacer mdreplacer,mdreplacer",
+    "mdreplacer src/mdreplacer.js~mdreplacer,mdreplacer",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber10",
     "this are test for the mardown replacer",
     "test"

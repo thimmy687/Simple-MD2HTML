@@ -1,6 +1,12 @@
 {
-  "coverage": "0%",
-  "expectCount": 0,
-  "actualCount": 0,
-  "files": {}
+  "coverage": "100%",
+  "expectCount": 1,
+  "actualCount": 1,
+  "files": {
+    "src/MDReplacer.js": {
+      "expectCount": 1,
+      "actualCount": 1,
+      "undocumentLines": []
+    }
+  }
 }
