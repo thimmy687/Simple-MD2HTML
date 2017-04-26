@@ -26,7 +26,7 @@ $ npm test
 ```
 ## Documentation
 
-* One part of the documentation is available as docx and pdf dirctly on [Github] 
+* One part of the documentation is available as docx and pdf dirctly on [Github](https://github.com/thimmy687/Simple-MD2HTML)
 
 * Or see as [esdoc](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML)
 
