@@ -32,44 +32,68 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MDReplacer.js~MDReplacer.html">MDReplacer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-normalizePort">normalizePort</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MongoClient">MongoClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-app">app</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-bodyParser">bodyParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-express">express</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-parser">parser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ps">ps</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/server.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">var express = require(&apos;express&apos;);
-var bodyParser = require(&apos;body-parser&apos;);
-var app = express();
-var MongoClient = require(&apos;mongodb&apos;).MongoClient;
-var ps = require(__dirname + &apos;\\MDReplacer.js&apos;);
-var path = require(&apos;path&apos;);
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * {express} minimal and flexible Node.js web application framework
+ * that provides a robust set of features for web and mobile applications.
+ */
+const express = require(&apos;express&apos;);
+/**
+ * {bodyParser} Parse incoming request bodies in a middleware
+ * before your handlers, available under the req.body property.
+ */
+const bodyParser = require(&apos;body-parser&apos;);
+/**
+ * {app} instance of express
+ */
+const app = express();
+/**
+ * {MongoClient} client for database connection
+ */
+const MongoClient = require(&apos;mongodb&apos;).MongoClient;
+/**
+ * {path} framework to resolve paths
+ */
+const path = require(&apos;path&apos;);
+/**
+ * {MDReplacer} MDReplacer instance
+ */
+const MDReplacer = require(&apos;./MDReplacer&apos;);
 //member
-var db;
-var parser = new ps.MDReplacer();
+let db;
+/**
+ * instance of MDReplacer
+ */
+let parser = new MDReplacer.MDReplacer();
 // make public folder accessible to public
 app.use(express.static(path.resolve(&apos;./public&apos;)));
 app.use(&quot;/css&quot;, express.static(path.resolve(&apos;./public/css&apos;)));
 app.use(&quot;/js&quot;, express.static(path.resolve(&apos;./public/js&apos;)));
 //database setup
-MongoClient.connect(&apos;mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db&apos;, function (err, database) {
+MongoClient.connect(&apos;mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db&apos;, (err, database) =&gt; {
     // start the server
     if (err)
         return console.log(&apos;DB-CONNECTION-ERR: &apos; + err);
     db = database;
     // set port to listen
-    app.listen(process.env.PORT || 3000, function () {
+    app.listen(normalizePort(process.env.PORT || 3000), () =&gt; {
         console.log(&apos;listening on 3000&apos;);
     });
     //clean history on startup
-    db.collection(&apos;inputs&apos;).drop(function (err, result) {
+    db.collection(&apos;inputs&apos;).drop((err, result) =&gt; {
         if (err)
             return console.log(&apos;WARN:&apos; + err);
         console.log(&quot;INFO: history clean!&quot;);
@@ -83,8 +107,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //let server read json data
 app.use(bodyParser.json());
 // routing
-app.get(&apos;/&apos;, function (req, res) {
-    db.collection(&apos;inputs&apos;).find().toArray(function (err, result) {
+app.get(&apos;/&apos;, (req, res) =&gt; {
+    db.collection(&apos;inputs&apos;).find().toArray((err, result) =&gt; {
         if (err)
             return console.log(err);
         if (result === null) {
@@ -93,7 +117,7 @@ app.get(&apos;/&apos;, function (req, res) {
         res.render(&apos;index.ejs&apos;, { inputs: result });
     });
 });
-app.post(&apos;/inputs&apos;, function (req, res) {
+app.post(&apos;/inputs&apos;, (req, res) =&gt; {
     var parsedText = parser.replace(req.body.input + &apos;&apos;);
     var toSave = {
         name: req.body.name,
@@ -101,11 +125,11 @@ app.post(&apos;/inputs&apos;, function (req, res) {
         output: parsedText
     };
     var history;
-    db.collection(&apos;inputs&apos;).save(toSave, function (err, result) {
+    db.collection(&apos;inputs&apos;).save(toSave, (err, result) =&gt; {
         if (err)
             return console.log(&apos;SAVE-DB-ERR:&apos; + err);
         console.log(&apos;INFO: saved to database&apos;);
-        db.collection(&apos;inputs&apos;).find().toArray(function (err, result) {
+        db.collection(&apos;inputs&apos;).find().toArray((err, result) =&gt; {
             if (err)
                 return console.log(&apos;FIND-ON-DB-ERR: &apos; + err);
             history = result;
@@ -114,7 +138,7 @@ app.post(&apos;/inputs&apos;, function (req, res) {
         });
     });
 });
-app.put(&apos;/inputs&apos;, function (req, res) {
+app.put(&apos;/inputs&apos;, (req, res) =&gt; {
     db.collection(&apos;inputs&apos;)
         .findOneAndUpdate({ name: &apos;input&apos; }, {
         $set: {
@@ -125,20 +149,35 @@ app.put(&apos;/inputs&apos;, function (req, res) {
     }, {
         sort: { _id: -1 },
         upsert: true
-    }, function (err, result) {
+    }, (err, result) =&gt; {
         if (err)
             return res.send(err);
         res.send(result);
     });
 });
-app[&quot;delete&quot;](&apos;/inputs&apos;, function (req, res) {
-    db.collection(&apos;inputs&apos;).drop(function (err, result) {
+app.delete(&apos;/inputs&apos;, (req, res) =&gt; {
+    db.collection(&apos;inputs&apos;).drop((err, result) =&gt; {
         if (err)
             return res.status(500).send(err);
         console.log(&quot;INFO: history clean!&quot;);
         res.status(200).send(&quot;INFO: history clean!&quot;);
     });
 });
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+    if (port &gt;= 0) {
+        // port number
+        return port;
+    }
+    return false;
+}
 //# sourceMappingURL=server.js.map</code></pre>
 
 </div>

@@ -32,39 +32,40 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MDReplacer.js~MDReplacer.html">MDReplacer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-normalizePort">normalizePort</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MongoClient">MongoClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-app">app</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-bodyParser">bodyParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-express">express</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-parser">parser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ps">ps</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">spec/MD2HTML.spec.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
-exports.__esModule = true;
-var MDReplacer_1 = require(&quot;./../src/MDReplacer&quot;);
-var replacerDict = new MDReplacer_1.MDReplacer().dictionary;
-var dictString = &apos;dict&apos; + replacerDict.toString();
+Object.defineProperty(exports, &quot;__esModule&quot;, { value: true });
+const MDReplacer_1 = require(&quot;./../src/MDReplacer&quot;);
+let replacerDict = new MDReplacer_1.MDReplacer().dictionary;
+let dictString = &apos;dict&apos; + replacerDict.toString();
 /**
  * this are test for the mardown replacer
  * @test {MDReplacer}
  */
-describe(&apos;This project is about making a simple markdown parser.&apos;, function () {
+describe(&apos;This project is about making a simple markdown parser.&apos;, () =&gt; {
     /**
      * @test {MDReplacer#replace}
      */
-    describe(&apos;check empty input&apos;, function () {
-        it(&apos;input : &quot;&quot;,&apos; + dictString + &apos; , output: &quot;&quot;&apos;, function () {
+    describe(&apos;check empty input&apos;, () =&gt; {
+        it(&apos;input : &quot;&quot;,&apos; + dictString + &apos; , output: &quot;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&apos;);
         });
@@ -72,67 +73,67 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
     * @test {MDReplacer#replace}
     */
-    describe(&apos;check simple input of each type&apos;, function () {
-        it(&apos;input : &quot;# Heading1&quot;, &apos; + dictString + &apos;, output: &quot;&lt;h1&gt;Heading1&lt;/h1&gt;&quot;&apos;, function () {
+    describe(&apos;check simple input of each type&apos;, () =&gt; {
+        it(&apos;input : &quot;# Heading1&quot;, &apos; + dictString + &apos;, output: &quot;&lt;h1&gt;Heading1&lt;/h1&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;# Heading1&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;# Heading1&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;h1&gt;Heading1&lt;/h1&gt;&apos;);
         });
-        it(&apos;input : &quot;## Heading2&quot;, &apos; + dictString + &apos;, output: &quot;&lt;h2&gt;Heading2&lt;/h2&gt;&quot;&apos;, function () {
+        it(&apos;input : &quot;## Heading2&quot;, &apos; + dictString + &apos;, output: &quot;&lt;h2&gt;Heading2&lt;/h2&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;## Heading2&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;## Heading2&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;h2&gt;Heading2&lt;/h2&gt;&apos;);
         });
-        it(&apos;input : &quot;**BoldText**&quot;, &apos; + dictString + &apos;, output: &quot;&lt;b&gt;BoldText&lt;/b&gt;&quot;&apos;, function () {
+        it(&apos;input : &quot;**BoldText**&quot;, &apos; + dictString + &apos;, output: &quot;&lt;b&gt;BoldText&lt;/b&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;**BoldText**&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;**BoldText**&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;b&gt;BoldText&lt;/b&gt;&apos;);
         });
-        it(&apos;input : &quot;*ItalicText*&quot;, &apos; + dictString + &apos;, output: &quot;&lt;i&gt;ItalicText&lt;/i&gt;&quot;&apos;, function () {
+        it(&apos;input : &quot;*ItalicText*&quot;, &apos; + dictString + &apos;, output: &quot;&lt;i&gt;ItalicText&lt;/i&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;*ItalicText*&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;*ItalicText*&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;i&gt;ItalicText&lt;/i&gt;&apos;);
         });
-        it(&apos;input : &quot;* List&quot;, &apos; + dictString + &apos;, output: &quot;&lt;ul&gt;&lt;li&gt;List&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, function () {
+        it(&apos;input : &quot;* List&quot;, &apos; + dictString + &apos;, output: &quot;&lt;ul&gt;&lt;li&gt;List&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;* List&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;* List&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;ul&gt;&lt;li&gt;List&lt;/li&gt;&lt;/ul&gt;&apos;);
         });
-        it(&apos;input : &quot;&gt;Cite text&quot;, &apos; + dictString + &apos;, output: &quot;&lt;blockquote&gt;&lt;p&gt;Cite text&lt;/p&gt;&lt;/blockquote&gt;&quot;&apos;, function () {
+        it(&apos;input : &quot;&gt;Cite text&quot;, &apos; + dictString + &apos;, output: &quot;&lt;blockquote&gt;&lt;p&gt;Cite text&lt;/p&gt;&lt;/blockquote&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;&gt;Cite text&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;&gt;Cite text&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;blockquote&gt;&lt;p&gt;Cite text&lt;/p&gt;&lt;/blockquote&gt;&apos;);
         });
-        it(&apos;input : &quot; Paragraph&quot;, &apos; + dictString + &apos;, output: &quot;&lt;p&gt;Paragraph&lt;/p&gt;&quot;&apos;, function () {
+        it(&apos;input : &quot; Paragraph&quot;, &apos; + dictString + &apos;, output: &quot;&lt;p&gt;Paragraph&lt;/p&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos; Paragraph&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos; Paragraph&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;p&gt;Paragraph&lt;/p&gt;&apos;);
         });
@@ -140,13 +141,13 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#replace}
      */
-    describe(&apos;check multi line input&apos;, function () {
-        it(&apos;input : &quot;# Test text \\n * with list&quot;, &apos; + dictString + &apos;, output: &quot;&lt;h1&gt;Test text&lt;/h1&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;with list&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, function () {
+    describe(&apos;check multi line input&apos;, () =&gt; {
+        it(&apos;input : &quot;# Test text \\n * with list&quot;, &apos; + dictString + &apos;, output: &quot;&lt;h1&gt;Test text&lt;/h1&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;with list&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;# Test text \n* with list&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;# Test text \n* with list&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;h1&gt;Test text &lt;/h1&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;with list&lt;/li&gt;&lt;/ul&gt;&apos;);
         });
@@ -154,13 +155,13 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#replace}
      */
-    describe(&apos;check multi line list input&apos;, function () {
-        it(&apos;input : &quot;# Test text\\n* list item 1\\n* list item 2\\n* list item 3&quot;, \n\t&apos; + dictString + &apos;,\n\toutput: &quot;&lt;h1&gt;Test text&lt;/h1&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, function () {
+    describe(&apos;check multi line list input&apos;, () =&gt; {
+        it(&apos;input : &quot;# Test text\\n* list item 1\\n* list item 2\\n* list item 3&quot;, \n\t&apos; + dictString + &apos;,\n\toutput: &quot;&lt;h1&gt;Test text&lt;/h1&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;# Test text\n* list item 1\n* list item 2\n* list item 3&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;# Test text\n* list item 1\n* list item 2\n* list item 3&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;h1&gt;Test text&lt;/h1&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&apos;);
         });
@@ -168,13 +169,13 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#replace}
      */
-    describe(&apos;check bolt and italic input&apos;, function () {
-        it(&apos;input : &quot;**Test** *text*&quot;, \n\t&apos; + dictString + &apos;,\n\toutput: &quot;&lt;b&gt;Test&lt;/b&gt; &lt;i&gt;text&lt;/i&gt;&quot;&apos;, function () {
+    describe(&apos;check bolt and italic input&apos;, () =&gt; {
+        it(&apos;input : &quot;**Test** *text*&quot;, \n\t&apos; + dictString + &apos;,\n\toutput: &quot;&lt;b&gt;Test&lt;/b&gt; &lt;i&gt;text&lt;/i&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;**Test** *text*&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = &apos;**Test** *text*&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe(&apos;&lt;b&gt;Test&lt;/b&gt; &lt;i&gt;text&lt;/i&gt;&apos;);
         });
@@ -182,14 +183,14 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#replaceDouble}
      */
-    describe(&apos;MDReplacer replace double tags&apos;, function () {
-        it(&apos;input: &quot;**Test**, \n\toutput: &quot;&lt;b&gt;Test&lt;/b&gt;&quot;&apos;, function () {
+    describe(&apos;MDReplacer replace double tags&apos;, () =&gt; {
+        it(&apos;input: &quot;**Test**, \n\toutput: &quot;&lt;b&gt;Test&lt;/b&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;**Test**&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
-            var key = &apos;**&apos;;
+            let input = &apos;**Test**&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
+            let key = &apos;**&apos;;
             // Act
-            var result = markdownReplacer.replaceDouble(input, key);
+            let result = markdownReplacer.replaceDouble(input, key);
             // Assert
             expect(result).toBe(&apos;&lt;b&gt;Test&lt;/b&gt;&apos;);
         });
@@ -197,27 +198,27 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#startsWith}
      */
-    describe(&apos;MDReplacer check startWith method&apos;, function () {
-        describe(&apos;method result true&apos;, function () {
-            it(&apos;input: &quot;&gt; test&quot;,\n\toutput: &quot;true&quot;&apos;, function () {
+    describe(&apos;MDReplacer check startWith method&apos;, () =&gt; {
+        describe(&apos;method result true&apos;, () =&gt; {
+            it(&apos;input: &quot;&gt; test&quot;,\n\toutput: &quot;true&quot;&apos;, () =&gt; {
                 // Arrange
-                var input = &apos;&gt; test&apos;;
-                var markdownReplacer = new MDReplacer_1.MDReplacer();
-                var key = &apos;&gt;&apos;;
+                let input = &apos;&gt; test&apos;;
+                let markdownReplacer = new MDReplacer_1.MDReplacer();
+                let key = &apos;&gt;&apos;;
                 // Act
-                var result = markdownReplacer.startsWith(input, key);
+                let result = markdownReplacer.startsWith(input, key);
                 // Assert
                 expect(result).toBe(true);
             });
         });
-        describe(&apos;method fails&apos;, function () {
-            it(&apos;input: &quot; test&quot;,\n\toutput: &quot;true&quot;&apos;, function () {
+        describe(&apos;method fails&apos;, () =&gt; {
+            it(&apos;input: &quot; test&quot;,\n\toutput: &quot;true&quot;&apos;, () =&gt; {
                 // Arrange
-                var input = &apos; test&apos;;
-                var markdownReplacer = new MDReplacer_1.MDReplacer();
-                var key = &apos;&gt;&apos;;
+                let input = &apos; test&apos;;
+                let markdownReplacer = new MDReplacer_1.MDReplacer();
+                let key = &apos;&gt;&apos;;
                 // Act
-                var result = markdownReplacer.startsWith(input, key);
+                let result = markdownReplacer.startsWith(input, key);
                 // Assert
                 expect(result).toBe(false);
             });
@@ -226,14 +227,14 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#combineMultiLineTags}
      */
-    describe(&apos;MDReplacer combineMultiLineTags&apos;, function () {
-        it(&apos;input: &quot;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&quot;,\n\toutput: &quot;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, function () {
+    describe(&apos;MDReplacer combineMultiLineTags&apos;, () =&gt; {
+        it(&apos;input: &quot;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&quot;,\n\toutput: &quot;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, () =&gt; {
             // Arrange
-            var input = &apos;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&apos;;
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
-            var key = &apos;&gt;&apos;;
+            let input = &apos;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&apos;;
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
+            let key = &apos;&gt;&apos;;
             // Act
-            var result = markdownReplacer.combineMultiLineTags(input);
+            let result = markdownReplacer.combineMultiLineTags(input);
             // Assert
             expect(result).toBe(&apos;&lt;ul&gt;&lt;li&gt;list item 1&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 2&lt;/li&gt;&lt;br/&gt;&lt;li&gt;list item 3&lt;/li&gt;&lt;/ul&gt;&apos;);
         });
@@ -241,87 +242,87 @@ describe(&apos;This project is about making a simple markdown parser.&apos;, fun
     /**
      * @test {MDReplacer#replaceKey}
      */
-    describe(&apos;MDReplacer check all different keys&apos;, function () {
-        describe(&apos;check heading 1&apos;, function () {
-            it(&apos;input: &quot;# &quot;,\n\toutput: &quot;&lt;h1&gt;&lt;/h1&gt;&quot;&apos;, function () {
+    describe(&apos;MDReplacer check all different keys&apos;, () =&gt; {
+        describe(&apos;check heading 1&apos;, () =&gt; {
+            it(&apos;input: &quot;# &quot;,\n\toutput: &quot;&lt;h1&gt;&lt;/h1&gt;&quot;&apos;, () =&gt; {
                 // Arrange
-                var input = &apos;# &apos;;
-                var markdownReplacer = new MDReplacer_1.MDReplacer();
-                var key = &apos;# &apos;;
+                let input = &apos;# &apos;;
+                let markdownReplacer = new MDReplacer_1.MDReplacer();
+                let key = &apos;# &apos;;
                 // Act
-                var result = markdownReplacer.replaceKey(input, key);
+                let result = markdownReplacer.replaceKey(input, key);
                 // Assert
                 expect(result).toBe(&apos;&lt;h1&gt;&lt;/h1&gt;&apos;);
             });
         }),
-            describe(&apos;check heading 2&apos;, function () {
-                it(&apos;input: &quot;## &quot;,\n\toutput: &quot;&lt;h2&gt;&lt;/h2&gt;&quot;&apos;, function () {
+            describe(&apos;check heading 2&apos;, () =&gt; {
+                it(&apos;input: &quot;## &quot;,\n\toutput: &quot;&lt;h2&gt;&lt;/h2&gt;&quot;&apos;, () =&gt; {
                     // Arrange
-                    var input = &apos;## &apos;;
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = &apos;## &apos;;
+                    let input = &apos;## &apos;;
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = &apos;## &apos;;
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe(&apos;&lt;h2&gt;&lt;/h2&gt;&apos;);
                 });
             }),
-            describe(&apos;check list&apos;, function () {
-                it(&apos;input: &quot;* &quot;,\n\toutput: &quot;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, function () {
+            describe(&apos;check list&apos;, () =&gt; {
+                it(&apos;input: &quot;* &quot;,\n\toutput: &quot;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&quot;&apos;, () =&gt; {
                     // Arrange
-                    var input = &apos;* &apos;;
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = &apos;* &apos;;
+                    let input = &apos;* &apos;;
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = &apos;* &apos;;
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe(&apos;&lt;ul&gt;&lt;li&gt;&lt;/li&gt;&lt;/ul&gt;&apos;);
                 });
             }),
-            describe(&apos;check bold&apos;, function () {
-                it(&apos;input: &quot;**** &quot;,\n\toutput: &quot;&lt;b&gt;&lt;/b&gt;&quot;&apos;, function () {
+            describe(&apos;check bold&apos;, () =&gt; {
+                it(&apos;input: &quot;**** &quot;,\n\toutput: &quot;&lt;b&gt;&lt;/b&gt;&quot;&apos;, () =&gt; {
                     // Arrange
-                    var input = &apos;****&apos;;
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = &apos;**&apos;;
+                    let input = &apos;****&apos;;
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = &apos;**&apos;;
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe(&apos;&lt;b&gt;&lt;/b&gt;&apos;);
                 });
             }),
-            describe(&apos;check italic&apos;, function () {
-                it(&apos;input: &quot;**&quot;,\n\toutput: &quot;&lt;i&gt;&lt;/i&gt;&quot;&apos;, function () {
+            describe(&apos;check italic&apos;, () =&gt; {
+                it(&apos;input: &quot;**&quot;,\n\toutput: &quot;&lt;i&gt;&lt;/i&gt;&quot;&apos;, () =&gt; {
                     // Arrange
-                    var input = &apos;**&apos;;
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = &apos;**&apos;;
+                    let input = &apos;**&apos;;
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = &apos;**&apos;;
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe(&apos;&lt;i&gt;&lt;/i&gt;&apos;);
                 });
             }),
-            describe(&apos;check cite text&apos;, function () {
-                it(&apos;input: &quot;&gt;&quot;,\n\toutput: &quot;&lt;blockquote&gt;&lt;p&gt;&lt;/p&gt;&lt;/blockquote&gt;&quot;&apos;, function () {
+            describe(&apos;check cite text&apos;, () =&gt; {
+                it(&apos;input: &quot;&gt;&quot;,\n\toutput: &quot;&lt;blockquote&gt;&lt;p&gt;&lt;/p&gt;&lt;/blockquote&gt;&quot;&apos;, () =&gt; {
                     // Arrange
-                    var input = &apos;&gt;&apos;;
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = &apos;&gt;&apos;;
+                    let input = &apos;&gt;&apos;;
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = &apos;&gt;&apos;;
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe(&apos;&lt;blockquote&gt;&lt;p&gt;&lt;/p&gt;&lt;/blockquote&gt;&apos;);
                 });
             }),
-            describe(&apos;check paragraph&apos;, function () {
-                it(&apos;input: &quot; &quot;,\n\toutput: &quot;&lt;p&gt;&lt;/p&gt;&quot;&apos;, function () {
+            describe(&apos;check paragraph&apos;, () =&gt; {
+                it(&apos;input: &quot; &quot;,\n\toutput: &quot;&lt;p&gt;&lt;/p&gt;&quot;&apos;, () =&gt; {
                     // Arrange
-                    var input = &apos; &apos;;
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = &apos; &apos;;
+                    let input = &apos; &apos;;
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = &apos; &apos;;
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe(&apos;&lt;p&gt;&lt;/p&gt;&apos;);
                 });

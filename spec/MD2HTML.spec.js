@@ -1,23 +1,23 @@
 "use strict";
-exports.__esModule = true;
-var MDReplacer_1 = require("./../src/MDReplacer");
-var replacerDict = new MDReplacer_1.MDReplacer().dictionary;
-var dictString = 'dict' + replacerDict.toString();
+Object.defineProperty(exports, "__esModule", { value: true });
+const MDReplacer_1 = require("./../src/MDReplacer");
+let replacerDict = new MDReplacer_1.MDReplacer().dictionary;
+let dictString = 'dict' + replacerDict.toString();
 /**
  * this are test for the mardown replacer
  * @test {MDReplacer}
  */
-describe('This project is about making a simple markdown parser.', function () {
+describe('This project is about making a simple markdown parser.', () => {
     /**
      * @test {MDReplacer#replace}
      */
-    describe('check empty input', function () {
-        it('input : "",' + dictString + ' , output: ""', function () {
+    describe('check empty input', () => {
+        it('input : "",' + dictString + ' , output: ""', () => {
             // Arrange
-            var input = '';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('');
         });
@@ -25,67 +25,67 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
     * @test {MDReplacer#replace}
     */
-    describe('check simple input of each type', function () {
-        it('input : "# Heading1", ' + dictString + ', output: "<h1>Heading1</h1>"', function () {
+    describe('check simple input of each type', () => {
+        it('input : "# Heading1", ' + dictString + ', output: "<h1>Heading1</h1>"', () => {
             // Arrange
-            var input = '# Heading1';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '# Heading1';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<h1>Heading1</h1>');
         });
-        it('input : "## Heading2", ' + dictString + ', output: "<h2>Heading2</h2>"', function () {
+        it('input : "## Heading2", ' + dictString + ', output: "<h2>Heading2</h2>"', () => {
             // Arrange
-            var input = '## Heading2';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '## Heading2';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<h2>Heading2</h2>');
         });
-        it('input : "**BoldText**", ' + dictString + ', output: "<b>BoldText</b>"', function () {
+        it('input : "**BoldText**", ' + dictString + ', output: "<b>BoldText</b>"', () => {
             // Arrange
-            var input = '**BoldText**';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '**BoldText**';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<b>BoldText</b>');
         });
-        it('input : "*ItalicText*", ' + dictString + ', output: "<i>ItalicText</i>"', function () {
+        it('input : "*ItalicText*", ' + dictString + ', output: "<i>ItalicText</i>"', () => {
             // Arrange
-            var input = '*ItalicText*';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '*ItalicText*';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<i>ItalicText</i>');
         });
-        it('input : "* List", ' + dictString + ', output: "<ul><li>List</li></ul>"', function () {
+        it('input : "* List", ' + dictString + ', output: "<ul><li>List</li></ul>"', () => {
             // Arrange
-            var input = '* List';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '* List';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<ul><li>List</li></ul>');
         });
-        it('input : ">Cite text", ' + dictString + ', output: "<blockquote><p>Cite text</p></blockquote>"', function () {
+        it('input : ">Cite text", ' + dictString + ', output: "<blockquote><p>Cite text</p></blockquote>"', () => {
             // Arrange
-            var input = '>Cite text';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '>Cite text';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<blockquote><p>Cite text</p></blockquote>');
         });
-        it('input : " Paragraph", ' + dictString + ', output: "<p>Paragraph</p>"', function () {
+        it('input : " Paragraph", ' + dictString + ', output: "<p>Paragraph</p>"', () => {
             // Arrange
-            var input = ' Paragraph';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = ' Paragraph';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<p>Paragraph</p>');
         });
@@ -93,13 +93,13 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#replace}
      */
-    describe('check multi line input', function () {
-        it('input : "# Test text \\n * with list", ' + dictString + ', output: "<h1>Test text</h1><br/><ul><li>with list</li></ul>"', function () {
+    describe('check multi line input', () => {
+        it('input : "# Test text \\n * with list", ' + dictString + ', output: "<h1>Test text</h1><br/><ul><li>with list</li></ul>"', () => {
             // Arrange
-            var input = '# Test text \n* with list';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '# Test text \n* with list';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<h1>Test text </h1><br/><ul><li>with list</li></ul>');
         });
@@ -107,13 +107,13 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#replace}
      */
-    describe('check multi line list input', function () {
-        it('input : "# Test text\\n* list item 1\\n* list item 2\\n* list item 3", \n\t' + dictString + ',\n\toutput: "<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>"', function () {
+    describe('check multi line list input', () => {
+        it('input : "# Test text\\n* list item 1\\n* list item 2\\n* list item 3", \n\t' + dictString + ',\n\toutput: "<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>"', () => {
             // Arrange
-            var input = '# Test text\n* list item 1\n* list item 2\n* list item 3';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '# Test text\n* list item 1\n* list item 2\n* list item 3';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');
         });
@@ -121,13 +121,13 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#replace}
      */
-    describe('check bolt and italic input', function () {
-        it('input : "**Test** *text*", \n\t' + dictString + ',\n\toutput: "<b>Test</b> <i>text</i>"', function () {
+    describe('check bolt and italic input', () => {
+        it('input : "**Test** *text*", \n\t' + dictString + ',\n\toutput: "<b>Test</b> <i>text</i>"', () => {
             // Arrange
-            var input = '**Test** *text*';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
+            let input = '**Test** *text*';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
             // Act
-            var result = markdownReplacer.replace(input);
+            let result = markdownReplacer.replace(input);
             // Assert
             expect(result).toBe('<b>Test</b> <i>text</i>');
         });
@@ -135,14 +135,14 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#replaceDouble}
      */
-    describe('MDReplacer replace double tags', function () {
-        it('input: "**Test**, \n\toutput: "<b>Test</b>"', function () {
+    describe('MDReplacer replace double tags', () => {
+        it('input: "**Test**, \n\toutput: "<b>Test</b>"', () => {
             // Arrange
-            var input = '**Test**';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
-            var key = '**';
+            let input = '**Test**';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
+            let key = '**';
             // Act
-            var result = markdownReplacer.replaceDouble(input, key);
+            let result = markdownReplacer.replaceDouble(input, key);
             // Assert
             expect(result).toBe('<b>Test</b>');
         });
@@ -150,27 +150,27 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#startsWith}
      */
-    describe('MDReplacer check startWith method', function () {
-        describe('method result true', function () {
-            it('input: "> test",\n\toutput: "true"', function () {
+    describe('MDReplacer check startWith method', () => {
+        describe('method result true', () => {
+            it('input: "> test",\n\toutput: "true"', () => {
                 // Arrange
-                var input = '> test';
-                var markdownReplacer = new MDReplacer_1.MDReplacer();
-                var key = '>';
+                let input = '> test';
+                let markdownReplacer = new MDReplacer_1.MDReplacer();
+                let key = '>';
                 // Act
-                var result = markdownReplacer.startsWith(input, key);
+                let result = markdownReplacer.startsWith(input, key);
                 // Assert
                 expect(result).toBe(true);
             });
         });
-        describe('method fails', function () {
-            it('input: " test",\n\toutput: "true"', function () {
+        describe('method fails', () => {
+            it('input: " test",\n\toutput: "true"', () => {
                 // Arrange
-                var input = ' test';
-                var markdownReplacer = new MDReplacer_1.MDReplacer();
-                var key = '>';
+                let input = ' test';
+                let markdownReplacer = new MDReplacer_1.MDReplacer();
+                let key = '>';
                 // Act
-                var result = markdownReplacer.startsWith(input, key);
+                let result = markdownReplacer.startsWith(input, key);
                 // Assert
                 expect(result).toBe(false);
             });
@@ -179,14 +179,14 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#combineMultiLineTags}
      */
-    describe('MDReplacer combineMultiLineTags', function () {
-        it('input: "<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>",\n\toutput: "<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>"', function () {
+    describe('MDReplacer combineMultiLineTags', () => {
+        it('input: "<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>",\n\toutput: "<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>"', () => {
             // Arrange
-            var input = '<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>';
-            var markdownReplacer = new MDReplacer_1.MDReplacer();
-            var key = '>';
+            let input = '<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>';
+            let markdownReplacer = new MDReplacer_1.MDReplacer();
+            let key = '>';
             // Act
-            var result = markdownReplacer.combineMultiLineTags(input);
+            let result = markdownReplacer.combineMultiLineTags(input);
             // Assert
             expect(result).toBe('<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');
         });
@@ -194,87 +194,87 @@ describe('This project is about making a simple markdown parser.', function () {
     /**
      * @test {MDReplacer#replaceKey}
      */
-    describe('MDReplacer check all different keys', function () {
-        describe('check heading 1', function () {
-            it('input: "# ",\n\toutput: "<h1></h1>"', function () {
+    describe('MDReplacer check all different keys', () => {
+        describe('check heading 1', () => {
+            it('input: "# ",\n\toutput: "<h1></h1>"', () => {
                 // Arrange
-                var input = '# ';
-                var markdownReplacer = new MDReplacer_1.MDReplacer();
-                var key = '# ';
+                let input = '# ';
+                let markdownReplacer = new MDReplacer_1.MDReplacer();
+                let key = '# ';
                 // Act
-                var result = markdownReplacer.replaceKey(input, key);
+                let result = markdownReplacer.replaceKey(input, key);
                 // Assert
                 expect(result).toBe('<h1></h1>');
             });
         }),
-            describe('check heading 2', function () {
-                it('input: "## ",\n\toutput: "<h2></h2>"', function () {
+            describe('check heading 2', () => {
+                it('input: "## ",\n\toutput: "<h2></h2>"', () => {
                     // Arrange
-                    var input = '## ';
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = '## ';
+                    let input = '## ';
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = '## ';
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe('<h2></h2>');
                 });
             }),
-            describe('check list', function () {
-                it('input: "* ",\n\toutput: "<ul><li></li></ul>"', function () {
+            describe('check list', () => {
+                it('input: "* ",\n\toutput: "<ul><li></li></ul>"', () => {
                     // Arrange
-                    var input = '* ';
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = '* ';
+                    let input = '* ';
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = '* ';
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe('<ul><li></li></ul>');
                 });
             }),
-            describe('check bold', function () {
-                it('input: "**** ",\n\toutput: "<b></b>"', function () {
+            describe('check bold', () => {
+                it('input: "**** ",\n\toutput: "<b></b>"', () => {
                     // Arrange
-                    var input = '****';
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = '**';
+                    let input = '****';
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = '**';
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe('<b></b>');
                 });
             }),
-            describe('check italic', function () {
-                it('input: "**",\n\toutput: "<i></i>"', function () {
+            describe('check italic', () => {
+                it('input: "**",\n\toutput: "<i></i>"', () => {
                     // Arrange
-                    var input = '**';
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = '**';
+                    let input = '**';
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = '**';
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe('<i></i>');
                 });
             }),
-            describe('check cite text', function () {
-                it('input: ">",\n\toutput: "<blockquote><p></p></blockquote>"', function () {
+            describe('check cite text', () => {
+                it('input: ">",\n\toutput: "<blockquote><p></p></blockquote>"', () => {
                     // Arrange
-                    var input = '>';
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = '>';
+                    let input = '>';
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = '>';
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe('<blockquote><p></p></blockquote>');
                 });
             }),
-            describe('check paragraph', function () {
-                it('input: " ",\n\toutput: "<p></p>"', function () {
+            describe('check paragraph', () => {
+                it('input: " ",\n\toutput: "<p></p>"', () => {
                     // Arrange
-                    var input = ' ';
-                    var markdownReplacer = new MDReplacer_1.MDReplacer();
-                    var key = ' ';
+                    let input = ' ';
+                    let markdownReplacer = new MDReplacer_1.MDReplacer();
+                    let key = ' ';
                     // Act
-                    var result = markdownReplacer.replaceKey(input, key);
+                    let result = markdownReplacer.replaceKey(input, key);
                     // Assert
                     expect(result).toBe('<p></p>');
                 });

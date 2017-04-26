@@ -1,8 +1,14 @@
 window.esdocSearchIndex = [
   [
     "markdowntohtmlparser/src/mdreplacer.js~mdreplacer",
-    "variable/index.html#static-variable-MDReplacer",
+    "class/src/MDReplacer.js~MDReplacer.html",
     "<span>MDReplacer</span> <span class=\"search-result-import-path\">markdowntohtmlparser/src/MDReplacer.js</span>",
+    "class"
+  ],
+  [
+    "markdowntohtmlparser~mdreplacer",
+    "variable/index.html#static-variable-MDReplacer",
+    "<span>MDReplacer</span> <span class=\"search-result-import-path\">markdowntohtmlparser</span>",
     "variable"
   ],
   [
@@ -30,6 +36,12 @@ window.esdocSearchIndex = [
     "variable"
   ],
   [
+    "markdowntohtmlparser~normalizeport",
+    "function/index.html#static-function-normalizePort",
+    "<span>normalizePort</span> <span class=\"search-result-import-path\">markdowntohtmlparser</span>",
+    "function"
+  ],
+  [
     "markdowntohtmlparser~parser",
     "variable/index.html#static-variable-parser",
     "<span>parser</span> <span class=\"search-result-import-path\">markdowntohtmlparser</span>",
@@ -39,12 +51,6 @@ window.esdocSearchIndex = [
     "markdowntohtmlparser~path",
     "variable/index.html#static-variable-path",
     "<span>path</span> <span class=\"search-result-import-path\">markdowntohtmlparser</span>",
-    "variable"
-  ],
-  [
-    "markdowntohtmlparser~ps",
-    "variable/index.html#static-variable-ps",
-    "<span>ps</span> <span class=\"search-result-import-path\">markdowntohtmlparser</span>",
     "variable"
   ],
   [
@@ -390,6 +396,48 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/mdreplacer.js~mdreplacer#combinemultilinetags",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-method-combineMultiLineTags",
+    "src/MDReplacer.js~MDReplacer#combineMultiLineTags",
+    "method"
+  ],
+  [
+    "src/mdreplacer.js~mdreplacer#constructor",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-constructor-constructor",
+    "src/MDReplacer.js~MDReplacer#constructor",
+    "method"
+  ],
+  [
+    "src/mdreplacer.js~mdreplacer#dictionary",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-member-dictionary",
+    "src/MDReplacer.js~MDReplacer#dictionary",
+    "member"
+  ],
+  [
+    "src/mdreplacer.js~mdreplacer#replace",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-method-replace",
+    "src/MDReplacer.js~MDReplacer#replace",
+    "method"
+  ],
+  [
+    "src/mdreplacer.js~mdreplacer#replacedouble",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-method-replaceDouble",
+    "src/MDReplacer.js~MDReplacer#replaceDouble",
+    "method"
+  ],
+  [
+    "src/mdreplacer.js~mdreplacer#replacekey",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-method-replaceKey",
+    "src/MDReplacer.js~MDReplacer#replaceKey",
+    "method"
+  ],
+  [
+    "src/mdreplacer.js~mdreplacer#startswith",
+    "class/src/MDReplacer.js~MDReplacer.html#instance-method-startsWith",
+    "src/MDReplacer.js~MDReplacer#startsWith",
+    "method"
+  ],
+  [
     "src/server.js",
     "file/src/server.js.html",
     "src/server.js",
@@ -402,7 +450,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replacekey mdreplacer#replacekey,mdreplacer#replacekey",
+    "mdreplacer#replacekey src/mdreplacer.js~mdreplacer#replacekey,mdreplacer#replacekey",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber197",
     "this are test for the mardown replacer MDReplacer check all different keys",
     "test"
@@ -450,7 +498,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#startswith mdreplacer#startswith,mdreplacer#startswith",
+    "mdreplacer#startswith src/mdreplacer.js~mdreplacer#startswith,mdreplacer#startswith",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber153",
     "this are test for the mardown replacer MDReplacer check startWith method",
     "test"
@@ -480,7 +528,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#combinemultilinetags mdreplacer#combinemultilinetags,mdreplacer#combinemultilinetags",
+    "mdreplacer#combinemultilinetags src/mdreplacer.js~mdreplacer#combinemultilinetags,mdreplacer#combinemultilinetags",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber182",
     "this are test for the mardown replacer MDReplacer combineMultiLineTags",
     "test"
@@ -492,7 +540,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replacedouble mdreplacer#replacedouble,mdreplacer#replacedouble",
+    "mdreplacer#replacedouble src/mdreplacer.js~mdreplacer#replacedouble,mdreplacer#replacedouble",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber138",
     "this are test for the mardown replacer MDReplacer replace double tags",
     "test"
@@ -504,7 +552,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "mdreplacer#replace src/mdreplacer.js~mdreplacer#replace,mdreplacer#replace",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber124",
     "this are test for the mardown replacer check bolt and italic input",
     "test"
@@ -516,7 +564,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "mdreplacer#replace src/mdreplacer.js~mdreplacer#replace,mdreplacer#replace",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber14",
     "this are test for the mardown replacer check empty input",
     "test"
@@ -528,7 +576,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "mdreplacer#replace src/mdreplacer.js~mdreplacer#replace,mdreplacer#replace",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber96",
     "this are test for the mardown replacer check multi line input",
     "test"
@@ -540,7 +588,7 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "mdreplacer#replace src/mdreplacer.js~mdreplacer#replace,mdreplacer#replace",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber110",
     "this are test for the mardown replacer check multi line list input",
     "test"
@@ -552,14 +600,14 @@ window.esdocSearchIndex = [
     "test"
   ],
   [
-    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "mdreplacer#replace src/mdreplacer.js~mdreplacer#replace,mdreplacer#replace",
     "test-file/spec/MD2HTML.spec.js.html#lineNumber28",
     "this are test for the mardown replacer check simple input of each type",
     "test"
   ],
   [
     "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber38",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber47",
     "this are test for the mardown replacer check simple input of each type ",
     "test"
   ],
@@ -571,13 +619,7 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber74",
-    "this are test for the mardown replacer check simple input of each type ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber47",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber83",
     "this are test for the mardown replacer check simple input of each type ",
     "test"
   ],
@@ -589,7 +631,13 @@ window.esdocSearchIndex = [
   ],
   [
     "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber83",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber74",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber38",
     "this are test for the mardown replacer check simple input of each type ",
     "test"
   ],

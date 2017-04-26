@@ -32,26 +32,27 @@
 <nav class="navigation" data-ice="nav"><div>
   <ul>
     
-  <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MDReplacer.js~MDReplacer.html">MDReplacer</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-normalizePort">normalizePort</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MDReplacer">MDReplacer</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-MongoClient">MongoClient</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-app">app</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-bodyParser">bodyParser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-express">express</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-parser">parser</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-path">path</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-ps">ps</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/MDReplacer.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
-exports.__esModule = true;
+Object.defineProperty(exports, &quot;__esModule&quot;, { value: true });
 /**
  * the Markdown Replacer class parse a markdown string to a HTML string
  */
-var MDReplacer = (function () {
-    function MDReplacer() {
+class MDReplacer {
+    constructor() {
         /**
          * dictionary with md token and html replacement tags
          */
@@ -91,14 +92,14 @@ var MDReplacer = (function () {
      * @param input : the whole document as string input
      * @return the parsed input string with all replaced tags
      */
-    MDReplacer.prototype.replace = function (input) {
+    replace(input) {
         // return if input is empty
         if (input == &quot;&quot;)
             return &quot;&quot;;
-        var blocks = input.split(&apos;\n&apos;);
-        var result = &quot;&quot;;
-        for (var line in blocks) {
-            for (var key in this.dictionary) {
+        let blocks = input.split(&apos;\n&apos;);
+        let result = &quot;&quot;;
+        for (let line in blocks) {
+            for (let key in this.dictionary) {
                 while (blocks[line].indexOf(key) !== -1) {
                     if ((key === &apos;&gt;&apos; || key === &apos; &apos;) &amp;&amp; !this.startsWith(blocks[line], key)) {
                         break;
@@ -113,15 +114,15 @@ var MDReplacer = (function () {
         }
         result = this.combineMultiLineTags(result);
         return result;
-    };
+    }
     /**
      * replace md tokens to html tags
      * @param input: string to parse
      * @param key: token to search
      * @return this method returns the string with the replaced html tags
      */
-    MDReplacer.prototype.replaceKey = function (input, key) {
-        var result = input;
+    replaceKey(input, key) {
+        let result = input;
         switch (key) {
             case &apos;**&apos;:
                 result = this.replaceDouble(result, key);
@@ -134,7 +135,7 @@ var MDReplacer = (function () {
                 break;
         }
         return result;
-    };
+    }
     /**
      * If the markdown token has a start and end token,
      * we replaces both
@@ -142,11 +143,11 @@ var MDReplacer = (function () {
      * @param key: token to replace
      * @return parsed string with html tag at beginning and ending
      */
-    MDReplacer.prototype.replaceDouble = function (input, key) {
-        var result = input;
-        var tmp = result.split(key);
+    replaceDouble(input, key) {
+        let result = input;
+        let tmp = result.split(key);
         if (tmp.length % 3 === 0) {
-            for (var i = 0; i &lt; 2; i++) {
+            for (let i = 0; i &lt; 2; i++) {
                 if (i === 0) {
                     result = result.replace(key, this.dictionary[key][&apos;start&apos;]);
                 }
@@ -159,15 +160,15 @@ var MDReplacer = (function () {
             result = this.replaceDouble(result, &apos;*&apos;);
         }
         return result;
-    };
+    }
     /**
      * small helper method to check if the current token is a starting token
      * @param input: string to check
      * @param key: token to check
      * @return the result as boolean, true if it is first else false
      */
-    MDReplacer.prototype.startsWith = function (input, key) {
-        var inputNormalized = input;
+    startsWith(input, key) {
+        let inputNormalized = input;
         if (key !== &apos; &apos;) {
             inputNormalized = input.replace(/ /g, &apos;&apos;);
         }
@@ -175,20 +176,19 @@ var MDReplacer = (function () {
             return true;
         }
         return false;
-    };
+    }
     /**
      * combine multiline list elements to one list
      * @param {string} input: string to parse
      * @return {string} parsed string
      */
-    MDReplacer.prototype.combineMultiLineTags = function (input) {
-        var result = input;
+    combineMultiLineTags(input) {
+        let result = input;
         result = result.replace(new RegExp(&apos;&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;&apos;, &apos;g&apos;), &apos;&lt;/li&gt;&lt;br/&gt;&lt;li&gt;&apos;);
         result = result.replace(new RegExp(&apos;&lt;/p&gt;&lt;/blockquote&gt;&lt;br/&gt;&lt;blockquote&gt;&lt;p&gt;&apos;, &apos;g&apos;), &apos;&lt;/p&gt;&lt;br/&gt;&lt;p&gt;&apos;);
         return result;
-    };
-    return MDReplacer;
-}());
+    }
+}
 exports.MDReplacer = MDReplacer;
 //# sourceMappingURL=MDReplacer.js.map</code></pre>
 

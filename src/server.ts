@@ -23,14 +23,14 @@ const path = require('path');
 /**
  * {MDReplacer} MDReplacer instance
  */
-import { MDReplacer } from './MDReplacer';
+const MDReplacer  = require('./MDReplacer');
 
 //member
 let db;
 /**
  * instance of MDReplacer
  */
-let parser = new MDReplacer();
+let parser = new MDReplacer.MDReplacer();
 
 // make public folder accessible to public
 app.use(express.static(path.resolve('./public')));

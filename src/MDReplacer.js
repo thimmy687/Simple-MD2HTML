@@ -1,10 +1,10 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * the Markdown Replacer class parse a markdown string to a HTML string
  */
-var MDReplacer = (function () {
-    function MDReplacer() {
+class MDReplacer {
+    constructor() {
         /**
          * dictionary with md token and html replacement tags
          */
@@ -44,14 +44,14 @@ var MDReplacer = (function () {
      * @param input : the whole document as string input
      * @return the parsed input string with all replaced tags
      */
-    MDReplacer.prototype.replace = function (input) {
+    replace(input) {
         // return if input is empty
         if (input == "")
             return "";
-        var blocks = input.split('\n');
-        var result = "";
-        for (var line in blocks) {
-            for (var key in this.dictionary) {
+        let blocks = input.split('\n');
+        let result = "";
+        for (let line in blocks) {
+            for (let key in this.dictionary) {
                 while (blocks[line].indexOf(key) !== -1) {
                     if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {
                         break;
@@ -66,15 +66,15 @@ var MDReplacer = (function () {
         }
         result = this.combineMultiLineTags(result);
         return result;
-    };
+    }
     /**
      * replace md tokens to html tags
      * @param input: string to parse
      * @param key: token to search
      * @return this method returns the string with the replaced html tags
      */
-    MDReplacer.prototype.replaceKey = function (input, key) {
-        var result = input;
+    replaceKey(input, key) {
+        let result = input;
         switch (key) {
             case '**':
                 result = this.replaceDouble(result, key);
@@ -87,7 +87,7 @@ var MDReplacer = (function () {
                 break;
         }
         return result;
-    };
+    }
     /**
      * If the markdown token has a start and end token,
      * we replaces both
@@ -95,11 +95,11 @@ var MDReplacer = (function () {
      * @param key: token to replace
      * @return parsed string with html tag at beginning and ending
      */
-    MDReplacer.prototype.replaceDouble = function (input, key) {
-        var result = input;
-        var tmp = result.split(key);
+    replaceDouble(input, key) {
+        let result = input;
+        let tmp = result.split(key);
         if (tmp.length % 3 === 0) {
-            for (var i = 0; i < 2; i++) {
+            for (let i = 0; i < 2; i++) {
                 if (i === 0) {
                     result = result.replace(key, this.dictionary[key]['start']);
                 }
@@ -112,15 +112,15 @@ var MDReplacer = (function () {
             result = this.replaceDouble(result, '*');
         }
         return result;
-    };
+    }
     /**
      * small helper method to check if the current token is a starting token
      * @param input: string to check
      * @param key: token to check
      * @return the result as boolean, true if it is first else false
      */
-    MDReplacer.prototype.startsWith = function (input, key) {
-        var inputNormalized = input;
+    startsWith(input, key) {
+        let inputNormalized = input;
         if (key !== ' ') {
             inputNormalized = input.replace(/ /g, '');
         }
@@ -128,19 +128,18 @@ var MDReplacer = (function () {
             return true;
         }
         return false;
-    };
+    }
     /**
      * combine multiline list elements to one list
      * @param {string} input: string to parse
      * @return {string} parsed string
      */
-    MDReplacer.prototype.combineMultiLineTags = function (input) {
-        var result = input;
+    combineMultiLineTags(input) {
+        let result = input;
         result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');
         result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');
         return result;
-    };
-    return MDReplacer;
-}());
+    }
+}
 exports.MDReplacer = MDReplacer;
 //# sourceMappingURL=MDReplacer.js.map

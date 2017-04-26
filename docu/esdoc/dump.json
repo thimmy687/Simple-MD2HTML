@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "src/MDReplacer.js",
-    "content": "\"use strict\";\r\nexports.__esModule = true;\r\n/**\r\n * the Markdown Replacer class parse a markdown string to a HTML string\r\n */\r\nvar MDReplacer = (function () {\r\n    function MDReplacer() {\r\n        /**\r\n         * dictionary with md token and html replacement tags\r\n         */\r\n        this.dictionary = {\r\n            \"## \": {\r\n                start: '<h2>',\r\n                end: '</h2>'\r\n            },\r\n            \"# \": {\r\n                start: '<h1>',\r\n                end: '</h1>'\r\n            },\r\n            \"**\": {\r\n                start: '<b>',\r\n                end: '</b>'\r\n            },\r\n            \"* \": {\r\n                start: '<ul><li>',\r\n                end: '</li></ul>'\r\n            },\r\n            \"*\": {\r\n                start: '<i>',\r\n                end: '</i>'\r\n            },\r\n            \">\": {\r\n                start: '<blockquote><p>',\r\n                end: '</p></blockquote>'\r\n            },\r\n            \" \": {\r\n                start: '<p>',\r\n                end: '</p>'\r\n            }\r\n        };\r\n    }\r\n    /**\r\n     * the replace method splits the string in blocks and parse each line\r\n     * @param input : the whole document as string input\r\n     * @return the parsed input string with all replaced tags\r\n     */\r\n    MDReplacer.prototype.replace = function (input) {\r\n        // return if input is empty\r\n        if (input == \"\")\r\n            return \"\";\r\n        var blocks = input.split('\\n');\r\n        var result = \"\";\r\n        for (var line in blocks) {\r\n            for (var key in this.dictionary) {\r\n                while (blocks[line].indexOf(key) !== -1) {\r\n                    if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {\r\n                        break;\r\n                    }\r\n                    blocks[line] = this.replaceKey(blocks[line], key);\r\n                }\r\n            }\r\n            if (line !== '0') {\r\n                result = result.concat('<br/>');\r\n            }\r\n            result = result.concat(blocks[line]);\r\n        }\r\n        result = this.combineMultiLineTags(result);\r\n        return result;\r\n    };\r\n    /**\r\n     * replace md tokens to html tags\r\n     * @param input: string to parse\r\n     * @param key: token to search\r\n     * @return this method returns the string with the replaced html tags\r\n     */\r\n    MDReplacer.prototype.replaceKey = function (input, key) {\r\n        var result = input;\r\n        switch (key) {\r\n            case '**':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            case '*':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            default:\r\n                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);\r\n                break;\r\n        }\r\n        return result;\r\n    };\r\n    /**\r\n     * If the markdown token has a start and end token,\r\n     * we replaces both\r\n     * @param input: string to parse\r\n     * @param key: token to replace\r\n     * @return parsed string with html tag at beginning and ending\r\n     */\r\n    MDReplacer.prototype.replaceDouble = function (input, key) {\r\n        var result = input;\r\n        var tmp = result.split(key);\r\n        if (tmp.length % 3 === 0) {\r\n            for (var i = 0; i < 2; i++) {\r\n                if (i === 0) {\r\n                    result = result.replace(key, this.dictionary[key]['start']);\r\n                }\r\n                else {\r\n                    result = result.replace(key, this.dictionary[key]['end']);\r\n                }\r\n            }\r\n        }\r\n        else if (key === '**' && tmp.length === 2) {\r\n            result = this.replaceDouble(result, '*');\r\n        }\r\n        return result;\r\n    };\r\n    /**\r\n     * small helper method to check if the current token is a starting token\r\n     * @param input: string to check\r\n     * @param key: token to check\r\n     * @return the result as boolean, true if it is first else false\r\n     */\r\n    MDReplacer.prototype.startsWith = function (input, key) {\r\n        var inputNormalized = input;\r\n        if (key !== ' ') {\r\n            inputNormalized = input.replace(/ /g, '');\r\n        }\r\n        if (inputNormalized.charAt(0) === key) {\r\n            return true;\r\n        }\r\n        return false;\r\n    };\r\n    /**\r\n     * combine multiline list elements to one list\r\n     * @param {string} input: string to parse\r\n     * @return {string} parsed string\r\n     */\r\n    MDReplacer.prototype.combineMultiLineTags = function (input) {\r\n        var result = input;\r\n        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');\r\n        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');\r\n        return result;\r\n    };\r\n    return MDReplacer;\r\n}());\r\nexports.MDReplacer = MDReplacer;\r\n//# sourceMappingURL=MDReplacer.js.map",
+    "content": "\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/**\r\n * the Markdown Replacer class parse a markdown string to a HTML string\r\n */\r\nclass MDReplacer {\r\n    constructor() {\r\n        /**\r\n         * dictionary with md token and html replacement tags\r\n         */\r\n        this.dictionary = {\r\n            \"## \": {\r\n                start: '<h2>',\r\n                end: '</h2>'\r\n            },\r\n            \"# \": {\r\n                start: '<h1>',\r\n                end: '</h1>'\r\n            },\r\n            \"**\": {\r\n                start: '<b>',\r\n                end: '</b>'\r\n            },\r\n            \"* \": {\r\n                start: '<ul><li>',\r\n                end: '</li></ul>'\r\n            },\r\n            \"*\": {\r\n                start: '<i>',\r\n                end: '</i>'\r\n            },\r\n            \">\": {\r\n                start: '<blockquote><p>',\r\n                end: '</p></blockquote>'\r\n            },\r\n            \" \": {\r\n                start: '<p>',\r\n                end: '</p>'\r\n            }\r\n        };\r\n    }\r\n    /**\r\n     * the replace method splits the string in blocks and parse each line\r\n     * @param input : the whole document as string input\r\n     * @return the parsed input string with all replaced tags\r\n     */\r\n    replace(input) {\r\n        // return if input is empty\r\n        if (input == \"\")\r\n            return \"\";\r\n        let blocks = input.split('\\n');\r\n        let result = \"\";\r\n        for (let line in blocks) {\r\n            for (let key in this.dictionary) {\r\n                while (blocks[line].indexOf(key) !== -1) {\r\n                    if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {\r\n                        break;\r\n                    }\r\n                    blocks[line] = this.replaceKey(blocks[line], key);\r\n                }\r\n            }\r\n            if (line !== '0') {\r\n                result = result.concat('<br/>');\r\n            }\r\n            result = result.concat(blocks[line]);\r\n        }\r\n        result = this.combineMultiLineTags(result);\r\n        return result;\r\n    }\r\n    /**\r\n     * replace md tokens to html tags\r\n     * @param input: string to parse\r\n     * @param key: token to search\r\n     * @return this method returns the string with the replaced html tags\r\n     */\r\n    replaceKey(input, key) {\r\n        let result = input;\r\n        switch (key) {\r\n            case '**':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            case '*':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            default:\r\n                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);\r\n                break;\r\n        }\r\n        return result;\r\n    }\r\n    /**\r\n     * If the markdown token has a start and end token,\r\n     * we replaces both\r\n     * @param input: string to parse\r\n     * @param key: token to replace\r\n     * @return parsed string with html tag at beginning and ending\r\n     */\r\n    replaceDouble(input, key) {\r\n        let result = input;\r\n        let tmp = result.split(key);\r\n        if (tmp.length % 3 === 0) {\r\n            for (let i = 0; i < 2; i++) {\r\n                if (i === 0) {\r\n                    result = result.replace(key, this.dictionary[key]['start']);\r\n                }\r\n                else {\r\n                    result = result.replace(key, this.dictionary[key]['end']);\r\n                }\r\n            }\r\n        }\r\n        else if (key === '**' && tmp.length === 2) {\r\n            result = this.replaceDouble(result, '*');\r\n        }\r\n        return result;\r\n    }\r\n    /**\r\n     * small helper method to check if the current token is a starting token\r\n     * @param input: string to check\r\n     * @param key: token to check\r\n     * @return the result as boolean, true if it is first else false\r\n     */\r\n    startsWith(input, key) {\r\n        let inputNormalized = input;\r\n        if (key !== ' ') {\r\n            inputNormalized = input.replace(/ /g, '');\r\n        }\r\n        if (inputNormalized.charAt(0) === key) {\r\n            return true;\r\n        }\r\n        return false;\r\n    }\r\n    /**\r\n     * combine multiline list elements to one list\r\n     * @param {string} input: string to parse\r\n     * @return {string} parsed string\r\n     */\r\n    combineMultiLineTags(input) {\r\n        let result = input;\r\n        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');\r\n        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');\r\n        return result;\r\n    }\r\n}\r\nexports.MDReplacer = MDReplacer;\r\n//# sourceMappingURL=MDReplacer.js.map",
     "static": true,
     "longname": "src/MDReplacer.js",
     "access": null,
@@ -12,7 +12,7 @@
   },
   {
     "__docId__": 1,
-    "kind": "variable",
+    "kind": "class",
     "name": "MDReplacer",
     "memberof": "src/MDReplacer.js",
     "static": true,
@@ -23,17 +23,245 @@
     "importStyle": null,
     "description": "the Markdown Replacer class parse a markdown string to a HTML string",
     "lineNumber": 6,
+    "interface": false
+  },
+  {
+    "__docId__": 2,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 3,
+    "kind": "member",
+    "name": "dictionary",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#dictionary",
+    "access": null,
+    "description": "dictionary with md token and html replacement tags",
+    "lineNumber": 11,
     "type": {
       "types": [
-        "*"
+        "{\"## \": *, \"# \": *, \"**\": *, \"* \": *, \"*\": *, \">\": *, \" \": *}"
       ]
     }
   },
   {
-    "__docId__": 2,
+    "__docId__": 4,
+    "kind": "method",
+    "name": "replace",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#replace",
+    "access": null,
+    "description": "the replace method splits the string in blocks and parse each line",
+    "lineNumber": 47,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "input",
+        "description": ": the whole document as string input"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": "the parsed input string with all replaced tags"
+    }
+  },
+  {
+    "__docId__": 5,
+    "kind": "method",
+    "name": "replaceKey",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#replaceKey",
+    "access": null,
+    "description": "replace md tokens to html tags",
+    "lineNumber": 76,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "input:",
+        "description": "string to parse"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key:",
+        "description": "token to search"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": "this method returns the string with the replaced html tags"
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "method",
+    "name": "replaceDouble",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#replaceDouble",
+    "access": null,
+    "description": "If the markdown token has a start and end token,\nwe replaces both",
+    "lineNumber": 98,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "input:",
+        "description": "string to parse"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key:",
+        "description": "token to replace"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": "parsed string with html tag at beginning and ending"
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "method",
+    "name": "startsWith",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#startsWith",
+    "access": null,
+    "description": "small helper method to check if the current token is a starting token",
+    "lineNumber": 122,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "input:",
+        "description": "string to check"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "key:",
+        "description": "token to check"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "*"
+      ],
+      "spread": false,
+      "description": "the result as boolean, true if it is first else false"
+    }
+  },
+  {
+    "__docId__": 8,
+    "kind": "method",
+    "name": "combineMultiLineTags",
+    "memberof": "src/MDReplacer.js~MDReplacer",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/MDReplacer.js~MDReplacer#combineMultiLineTags",
+    "access": null,
+    "description": "combine multiline list elements to one list",
+    "lineNumber": 137,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "input:",
+        "description": "string to parse"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "parsed string"
+    }
+  },
+  {
+    "__docId__": 9,
     "kind": "file",
     "name": "src/server.js",
-    "content": "var express = require('express');\r\nvar bodyParser = require('body-parser');\r\nvar app = express();\r\nvar MongoClient = require('mongodb').MongoClient;\r\nvar ps = require(__dirname + '\\\\MDReplacer.js');\r\nvar path = require('path');\r\n//member\r\nvar db;\r\nvar parser = new ps.MDReplacer();\r\n// make public folder accessible to public\r\napp.use(express.static(path.resolve('./public')));\r\napp.use(\"/css\", express.static(path.resolve('./public/css')));\r\napp.use(\"/js\", express.static(path.resolve('./public/js')));\r\n//database setup\r\nMongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db', function (err, database) {\r\n    // start the server\r\n    if (err)\r\n        return console.log('DB-CONNECTION-ERR: ' + err);\r\n    db = database;\r\n    // set port to listen\r\n    app.listen(process.env.PORT || 3000, function () {\r\n        console.log('listening on 3000');\r\n    });\r\n    //clean history on startup\r\n    db.collection('inputs').drop(function (err, result) {\r\n        if (err)\r\n            return console.log('WARN:' + err);\r\n        console.log(\"INFO: history clean!\");\r\n    });\r\n});\r\n// middleware \r\napp.set('view engine', 'ejs');\r\n// body-parser extracts the data from the form element and \r\n// add them to the body property in the request object\r\napp.use(bodyParser.urlencoded({ extended: true }));\r\n//let server read json data\r\napp.use(bodyParser.json());\r\n// routing\r\napp.get('/', function (req, res) {\r\n    db.collection('inputs').find().toArray(function (err, result) {\r\n        if (err)\r\n            return console.log(err);\r\n        if (result === null) {\r\n            result = \"test\";\r\n        }\r\n        res.render('index.ejs', { inputs: result });\r\n    });\r\n});\r\napp.post('/inputs', function (req, res) {\r\n    var parsedText = parser.replace(req.body.input + '');\r\n    var toSave = {\r\n        name: req.body.name,\r\n        input: req.body.input,\r\n        output: parsedText\r\n    };\r\n    var history;\r\n    db.collection('inputs').save(toSave, function (err, result) {\r\n        if (err)\r\n            return console.log('SAVE-DB-ERR:' + err);\r\n        console.log('INFO: saved to database');\r\n        db.collection('inputs').find().toArray(function (err, result) {\r\n            if (err)\r\n                return console.log('FIND-ON-DB-ERR: ' + err);\r\n            history = result;\r\n            res.setHeader('Content-Type', 'application/json');\r\n            res.redirect('/');\r\n        });\r\n    });\r\n});\r\napp.put('/inputs', function (req, res) {\r\n    db.collection('inputs')\r\n        .findOneAndUpdate({ name: 'input' }, {\r\n        $set: {\r\n            name: req.body.name,\r\n            input: req.body.input,\r\n            output: req.body.output\r\n        }\r\n    }, {\r\n        sort: { _id: -1 },\r\n        upsert: true\r\n    }, function (err, result) {\r\n        if (err)\r\n            return res.send(err);\r\n        res.send(result);\r\n    });\r\n});\r\napp[\"delete\"]('/inputs', function (req, res) {\r\n    db.collection('inputs').drop(function (err, result) {\r\n        if (err)\r\n            return res.status(500).send(err);\r\n        console.log(\"INFO: history clean!\");\r\n        res.status(200).send(\"INFO: history clean!\");\r\n    });\r\n});\r\n//# sourceMappingURL=server.js.map",
+    "content": "/**\r\n * {express} minimal and flexible Node.js web application framework\r\n * that provides a robust set of features for web and mobile applications.\r\n */\r\nconst express = require('express');\r\n/**\r\n * {bodyParser} Parse incoming request bodies in a middleware\r\n * before your handlers, available under the req.body property.\r\n */\r\nconst bodyParser = require('body-parser');\r\n/**\r\n * {app} instance of express\r\n */\r\nconst app = express();\r\n/**\r\n * {MongoClient} client for database connection\r\n */\r\nconst MongoClient = require('mongodb').MongoClient;\r\n/**\r\n * {path} framework to resolve paths\r\n */\r\nconst path = require('path');\r\n/**\r\n * {MDReplacer} MDReplacer instance\r\n */\r\nconst MDReplacer = require('./MDReplacer');\r\n//member\r\nlet db;\r\n/**\r\n * instance of MDReplacer\r\n */\r\nlet parser = new MDReplacer.MDReplacer();\r\n// make public folder accessible to public\r\napp.use(express.static(path.resolve('./public')));\r\napp.use(\"/css\", express.static(path.resolve('./public/css')));\r\napp.use(\"/js\", express.static(path.resolve('./public/js')));\r\n//database setup\r\nMongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db', (err, database) => {\r\n    // start the server\r\n    if (err)\r\n        return console.log('DB-CONNECTION-ERR: ' + err);\r\n    db = database;\r\n    // set port to listen\r\n    app.listen(normalizePort(process.env.PORT || 3000), () => {\r\n        console.log('listening on 3000');\r\n    });\r\n    //clean history on startup\r\n    db.collection('inputs').drop((err, result) => {\r\n        if (err)\r\n            return console.log('WARN:' + err);\r\n        console.log(\"INFO: history clean!\");\r\n    });\r\n});\r\n// middleware \r\napp.set('view engine', 'ejs');\r\n// body-parser extracts the data from the form element and \r\n// add them to the body property in the request object\r\napp.use(bodyParser.urlencoded({ extended: true }));\r\n//let server read json data\r\napp.use(bodyParser.json());\r\n// routing\r\napp.get('/', (req, res) => {\r\n    db.collection('inputs').find().toArray((err, result) => {\r\n        if (err)\r\n            return console.log(err);\r\n        if (result === null) {\r\n            result = \"test\";\r\n        }\r\n        res.render('index.ejs', { inputs: result });\r\n    });\r\n});\r\napp.post('/inputs', (req, res) => {\r\n    var parsedText = parser.replace(req.body.input + '');\r\n    var toSave = {\r\n        name: req.body.name,\r\n        input: req.body.input,\r\n        output: parsedText\r\n    };\r\n    var history;\r\n    db.collection('inputs').save(toSave, (err, result) => {\r\n        if (err)\r\n            return console.log('SAVE-DB-ERR:' + err);\r\n        console.log('INFO: saved to database');\r\n        db.collection('inputs').find().toArray((err, result) => {\r\n            if (err)\r\n                return console.log('FIND-ON-DB-ERR: ' + err);\r\n            history = result;\r\n            res.setHeader('Content-Type', 'application/json');\r\n            res.redirect('/');\r\n        });\r\n    });\r\n});\r\napp.put('/inputs', (req, res) => {\r\n    db.collection('inputs')\r\n        .findOneAndUpdate({ name: 'input' }, {\r\n        $set: {\r\n            name: req.body.name,\r\n            input: req.body.input,\r\n            output: req.body.output\r\n        }\r\n    }, {\r\n        sort: { _id: -1 },\r\n        upsert: true\r\n    }, (err, result) => {\r\n        if (err)\r\n            return res.send(err);\r\n        res.send(result);\r\n    });\r\n});\r\napp.delete('/inputs', (req, res) => {\r\n    db.collection('inputs').drop((err, result) => {\r\n        if (err)\r\n            return res.status(500).send(err);\r\n        console.log(\"INFO: history clean!\");\r\n        res.status(200).send(\"INFO: history clean!\");\r\n    });\r\n});\r\n/**\r\n * Normalize a port into a number, string, or false.\r\n */\r\nfunction normalizePort(val) {\r\n    var port = parseInt(val, 10);\r\n    if (isNaN(port)) {\r\n        // named pipe\r\n        return val;\r\n    }\r\n    if (port >= 0) {\r\n        // port number\r\n        return port;\r\n    }\r\n    return false;\r\n}\r\n//# sourceMappingURL=server.js.map",
     "static": true,
     "longname": "src/server.js",
     "access": null,
@@ -41,7 +269,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 3,
+    "__docId__": 10,
     "kind": "variable",
     "name": "express",
     "memberof": "src/server.js",
@@ -51,15 +279,8 @@
     "export": false,
     "importPath": "markdowntohtmlparser",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 1,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "{express} minimal and flexible Node.js web application framework\nthat provides a robust set of features for web and mobile applications.",
+    "lineNumber": 5,
     "type": {
       "types": [
         "*"
@@ -67,7 +288,7 @@
     }
   },
   {
-    "__docId__": 4,
+    "__docId__": 11,
     "kind": "variable",
     "name": "bodyParser",
     "memberof": "src/server.js",
@@ -77,15 +298,8 @@
     "export": false,
     "importPath": "markdowntohtmlparser",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 2,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "{bodyParser} Parse incoming request bodies in a middleware\nbefore your handlers, available under the req.body property.",
+    "lineNumber": 10,
     "type": {
       "types": [
         "*"
@@ -93,7 +307,7 @@
     }
   },
   {
-    "__docId__": 5,
+    "__docId__": 12,
     "kind": "variable",
     "name": "app",
     "memberof": "src/server.js",
@@ -103,15 +317,8 @@
     "export": false,
     "importPath": "markdowntohtmlparser",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 3,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "{app} instance of express",
+    "lineNumber": 14,
     "type": {
       "types": [
         "*"
@@ -119,7 +326,7 @@
     }
   },
   {
-    "__docId__": 6,
+    "__docId__": 13,
     "kind": "variable",
     "name": "MongoClient",
     "memberof": "src/server.js",
@@ -129,15 +336,8 @@
     "export": false,
     "importPath": "markdowntohtmlparser",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 4,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "{MongoClient} client for database connection",
+    "lineNumber": 18,
     "type": {
       "types": [
         "*"
@@ -145,33 +345,7 @@
     }
   },
   {
-    "__docId__": 7,
-    "kind": "variable",
-    "name": "ps",
-    "memberof": "src/server.js",
-    "static": true,
-    "longname": "src/server.js~ps",
-    "access": null,
-    "export": false,
-    "importPath": "markdowntohtmlparser",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 5,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
-    "type": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 8,
+    "__docId__": 14,
     "kind": "variable",
     "name": "path",
     "memberof": "src/server.js",
@@ -181,15 +355,8 @@
     "export": false,
     "importPath": "markdowntohtmlparser",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 6,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "{path} framework to resolve paths",
+    "lineNumber": 22,
     "type": {
       "types": [
         "*"
@@ -197,7 +364,26 @@
     }
   },
   {
-    "__docId__": 9,
+    "__docId__": 15,
+    "kind": "variable",
+    "name": "MDReplacer",
+    "memberof": "src/server.js",
+    "static": true,
+    "longname": "src/server.js~MDReplacer",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": "{MDReplacer} MDReplacer instance",
+    "lineNumber": 26,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 16,
     "kind": "variable",
     "name": "parser",
     "memberof": "src/server.js",
@@ -207,15 +393,8 @@
     "export": false,
     "importPath": "markdowntohtmlparser",
     "importStyle": null,
-    "description": null,
-    "lineNumber": 9,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "instance of MDReplacer",
+    "lineNumber": 32,
     "type": {
       "types": [
         "*"
@@ -223,7 +402,36 @@
     }
   },
   {
-    "__docId__": 11,
+    "__docId__": 17,
+    "kind": "function",
+    "name": "normalizePort",
+    "memberof": "src/server.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "src/server.js~normalizePort",
+    "access": null,
+    "export": false,
+    "importPath": "markdowntohtmlparser",
+    "importStyle": null,
+    "description": "Normalize a port into a number, string, or false.",
+    "lineNumber": 121,
+    "params": [
+      {
+        "name": "val",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "boolean"
+      ]
+    }
+  },
+  {
+    "__docId__": 19,
     "kind": "external",
     "name": "Infinity",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
@@ -235,7 +443,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 12,
+    "__docId__": 20,
     "kind": "external",
     "name": "NaN",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
@@ -247,7 +455,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 13,
+    "__docId__": 21,
     "kind": "external",
     "name": "undefined",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
@@ -259,7 +467,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 14,
+    "__docId__": 22,
     "kind": "external",
     "name": "null",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
@@ -271,7 +479,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 15,
+    "__docId__": 23,
     "kind": "external",
     "name": "Object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -283,7 +491,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 16,
+    "__docId__": 24,
     "kind": "external",
     "name": "object",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
@@ -295,7 +503,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 17,
+    "__docId__": 25,
     "kind": "external",
     "name": "Function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -307,7 +515,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 18,
+    "__docId__": 26,
     "kind": "external",
     "name": "function",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
@@ -319,7 +527,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 19,
+    "__docId__": 27,
     "kind": "external",
     "name": "Boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -331,7 +539,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 20,
+    "__docId__": 28,
     "kind": "external",
     "name": "boolean",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
@@ -343,7 +551,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 21,
+    "__docId__": 29,
     "kind": "external",
     "name": "Symbol",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
@@ -355,7 +563,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 22,
+    "__docId__": 30,
     "kind": "external",
     "name": "Error",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
@@ -367,7 +575,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 23,
+    "__docId__": 31,
     "kind": "external",
     "name": "EvalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
@@ -379,7 +587,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 24,
+    "__docId__": 32,
     "kind": "external",
     "name": "InternalError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
@@ -391,7 +599,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 25,
+    "__docId__": 33,
     "kind": "external",
     "name": "RangeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
@@ -403,7 +611,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 26,
+    "__docId__": 34,
     "kind": "external",
     "name": "ReferenceError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
@@ -415,7 +623,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 27,
+    "__docId__": 35,
     "kind": "external",
     "name": "SyntaxError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
@@ -427,7 +635,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 28,
+    "__docId__": 36,
     "kind": "external",
     "name": "TypeError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
@@ -439,7 +647,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 29,
+    "__docId__": 37,
     "kind": "external",
     "name": "URIError",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
@@ -451,7 +659,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 30,
+    "__docId__": 38,
     "kind": "external",
     "name": "Number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -463,7 +671,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 31,
+    "__docId__": 39,
     "kind": "external",
     "name": "number",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
@@ -475,7 +683,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 32,
+    "__docId__": 40,
     "kind": "external",
     "name": "Date",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
@@ -487,7 +695,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 33,
+    "__docId__": 41,
     "kind": "external",
     "name": "String",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -499,7 +707,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 34,
+    "__docId__": 42,
     "kind": "external",
     "name": "string",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
@@ -511,7 +719,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 35,
+    "__docId__": 43,
     "kind": "external",
     "name": "RegExp",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
@@ -523,7 +731,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 36,
+    "__docId__": 44,
     "kind": "external",
     "name": "Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
@@ -535,7 +743,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 37,
+    "__docId__": 45,
     "kind": "external",
     "name": "Int8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
@@ -547,7 +755,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 38,
+    "__docId__": 46,
     "kind": "external",
     "name": "Uint8Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
@@ -559,7 +767,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 39,
+    "__docId__": 47,
     "kind": "external",
     "name": "Uint8ClampedArray",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
@@ -571,7 +779,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 40,
+    "__docId__": 48,
     "kind": "external",
     "name": "Int16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
@@ -583,7 +791,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 41,
+    "__docId__": 49,
     "kind": "external",
     "name": "Uint16Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
@@ -595,7 +803,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 42,
+    "__docId__": 50,
     "kind": "external",
     "name": "Int32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
@@ -607,7 +815,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 43,
+    "__docId__": 51,
     "kind": "external",
     "name": "Uint32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
@@ -619,7 +827,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 44,
+    "__docId__": 52,
     "kind": "external",
     "name": "Float32Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
@@ -631,7 +839,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 45,
+    "__docId__": 53,
     "kind": "external",
     "name": "Float64Array",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
@@ -643,7 +851,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 46,
+    "__docId__": 54,
     "kind": "external",
     "name": "Map",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
@@ -655,7 +863,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 47,
+    "__docId__": 55,
     "kind": "external",
     "name": "Set",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
@@ -667,7 +875,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 48,
+    "__docId__": 56,
     "kind": "external",
     "name": "WeakMap",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
@@ -679,7 +887,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 49,
+    "__docId__": 57,
     "kind": "external",
     "name": "WeakSet",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
@@ -691,7 +899,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 50,
+    "__docId__": 58,
     "kind": "external",
     "name": "ArrayBuffer",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
@@ -703,7 +911,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 51,
+    "__docId__": 59,
     "kind": "external",
     "name": "DataView",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
@@ -715,7 +923,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 52,
+    "__docId__": 60,
     "kind": "external",
     "name": "JSON",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
@@ -727,7 +935,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 53,
+    "__docId__": 61,
     "kind": "external",
     "name": "Promise",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
@@ -739,7 +947,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 54,
+    "__docId__": 62,
     "kind": "external",
     "name": "Generator",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
@@ -751,7 +959,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 55,
+    "__docId__": 63,
     "kind": "external",
     "name": "GeneratorFunction",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
@@ -763,7 +971,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 56,
+    "__docId__": 64,
     "kind": "external",
     "name": "Reflect",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
@@ -775,7 +983,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 57,
+    "__docId__": 65,
     "kind": "external",
     "name": "Proxy",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
@@ -788,7 +996,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 59,
+    "__docId__": 67,
     "kind": "external",
     "name": "CanvasRenderingContext2D",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
@@ -800,7 +1008,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 60,
+    "__docId__": 68,
     "kind": "external",
     "name": "DocumentFragment",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
@@ -812,7 +1020,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 61,
+    "__docId__": 69,
     "kind": "external",
     "name": "Element",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
@@ -824,7 +1032,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 62,
+    "__docId__": 70,
     "kind": "external",
     "name": "Event",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
@@ -836,7 +1044,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 63,
+    "__docId__": 71,
     "kind": "external",
     "name": "Node",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
@@ -848,7 +1056,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 64,
+    "__docId__": 72,
     "kind": "external",
     "name": "NodeList",
     "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
@@ -860,7 +1068,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 65,
+    "__docId__": 73,
     "kind": "external",
     "name": "XMLHttpRequest",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
@@ -872,7 +1080,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 66,
+    "__docId__": 74,
     "kind": "external",
     "name": "AudioContext",
     "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
@@ -885,10 +1093,10 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 67,
+    "__docId__": 75,
     "kind": "testFile",
     "name": "spec/MD2HTML.spec.js",
-    "content": "\"use strict\";\r\nexports.__esModule = true;\r\nvar MDReplacer_1 = require(\"./../src/MDReplacer\");\r\nvar replacerDict = new MDReplacer_1.MDReplacer().dictionary;\r\nvar dictString = 'dict' + replacerDict.toString();\r\n/**\r\n * this are test for the mardown replacer\r\n * @test {MDReplacer}\r\n */\r\ndescribe('This project is about making a simple markdown parser.', function () {\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check empty input', function () {\r\n        it('input : \"\",' + dictString + ' , output: \"\"', function () {\r\n            // Arrange\r\n            var input = '';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('');\r\n        });\r\n    });\r\n    /**\r\n    * @test {MDReplacer#replace}\r\n    */\r\n    describe('check simple input of each type', function () {\r\n        it('input : \"# Heading1\", ' + dictString + ', output: \"<h1>Heading1</h1>\"', function () {\r\n            // Arrange\r\n            var input = '# Heading1';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Heading1</h1>');\r\n        });\r\n        it('input : \"## Heading2\", ' + dictString + ', output: \"<h2>Heading2</h2>\"', function () {\r\n            // Arrange\r\n            var input = '## Heading2';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h2>Heading2</h2>');\r\n        });\r\n        it('input : \"**BoldText**\", ' + dictString + ', output: \"<b>BoldText</b>\"', function () {\r\n            // Arrange\r\n            var input = '**BoldText**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>BoldText</b>');\r\n        });\r\n        it('input : \"*ItalicText*\", ' + dictString + ', output: \"<i>ItalicText</i>\"', function () {\r\n            // Arrange\r\n            var input = '*ItalicText*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<i>ItalicText</i>');\r\n        });\r\n        it('input : \"* List\", ' + dictString + ', output: \"<ul><li>List</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '* List';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>List</li></ul>');\r\n        });\r\n        it('input : \">Cite text\", ' + dictString + ', output: \"<blockquote><p>Cite text</p></blockquote>\"', function () {\r\n            // Arrange\r\n            var input = '>Cite text';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<blockquote><p>Cite text</p></blockquote>');\r\n        });\r\n        it('input : \" Paragraph\", ' + dictString + ', output: \"<p>Paragraph</p>\"', function () {\r\n            // Arrange\r\n            var input = ' Paragraph';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<p>Paragraph</p>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line input', function () {\r\n        it('input : \"# Test text \\\\n * with list\", ' + dictString + ', output: \"<h1>Test text</h1><br/><ul><li>with list</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text \\n* with list';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text </h1><br/><ul><li>with list</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line list input', function () {\r\n        it('input : \"# Test text\\\\n* list item 1\\\\n* list item 2\\\\n* list item 3\", \\n\\t' + dictString + ',\\n\\toutput: \"<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text\\n* list item 1\\n* list item 2\\n* list item 3';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check bolt and italic input', function () {\r\n        it('input : \"**Test** *text*\", \\n\\t' + dictString + ',\\n\\toutput: \"<b>Test</b> <i>text</i>\"', function () {\r\n            // Arrange\r\n            var input = '**Test** *text*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b> <i>text</i>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceDouble}\r\n     */\r\n    describe('MDReplacer replace double tags', function () {\r\n        it('input: \"**Test**, \\n\\toutput: \"<b>Test</b>\"', function () {\r\n            // Arrange\r\n            var input = '**Test**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            var key = '**';\r\n            // Act\r\n            var result = markdownReplacer.replaceDouble(input, key);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#startsWith}\r\n     */\r\n    describe('MDReplacer check startWith method', function () {\r\n        describe('method result true', function () {\r\n            it('input: \"> test\",\\n\\toutput: \"true\"', function () {\r\n                // Arrange\r\n                var input = '> test';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '>';\r\n                // Act\r\n                var result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(true);\r\n            });\r\n        });\r\n        describe('method fails', function () {\r\n            it('input: \" test\",\\n\\toutput: \"true\"', function () {\r\n                // Arrange\r\n                var input = ' test';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '>';\r\n                // Act\r\n                var result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(false);\r\n            });\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#combineMultiLineTags}\r\n     */\r\n    describe('MDReplacer combineMultiLineTags', function () {\r\n        it('input: \"<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>\",\\n\\toutput: \"<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            var key = '>';\r\n            // Act\r\n            var result = markdownReplacer.combineMultiLineTags(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceKey}\r\n     */\r\n    describe('MDReplacer check all different keys', function () {\r\n        describe('check heading 1', function () {\r\n            it('input: \"# \",\\n\\toutput: \"<h1></h1>\"', function () {\r\n                // Arrange\r\n                var input = '# ';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '# ';\r\n                // Act\r\n                var result = markdownReplacer.replaceKey(input, key);\r\n                // Assert\r\n                expect(result).toBe('<h1></h1>');\r\n            });\r\n        }),\r\n            describe('check heading 2', function () {\r\n                it('input: \"## \",\\n\\toutput: \"<h2></h2>\"', function () {\r\n                    // Arrange\r\n                    var input = '## ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '## ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<h2></h2>');\r\n                });\r\n            }),\r\n            describe('check list', function () {\r\n                it('input: \"* \",\\n\\toutput: \"<ul><li></li></ul>\"', function () {\r\n                    // Arrange\r\n                    var input = '* ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '* ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<ul><li></li></ul>');\r\n                });\r\n            }),\r\n            describe('check bold', function () {\r\n                it('input: \"**** \",\\n\\toutput: \"<b></b>\"', function () {\r\n                    // Arrange\r\n                    var input = '****';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '**';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<b></b>');\r\n                });\r\n            }),\r\n            describe('check italic', function () {\r\n                it('input: \"**\",\\n\\toutput: \"<i></i>\"', function () {\r\n                    // Arrange\r\n                    var input = '**';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '**';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<i></i>');\r\n                });\r\n            }),\r\n            describe('check cite text', function () {\r\n                it('input: \">\",\\n\\toutput: \"<blockquote><p></p></blockquote>\"', function () {\r\n                    // Arrange\r\n                    var input = '>';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '>';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<blockquote><p></p></blockquote>');\r\n                });\r\n            }),\r\n            describe('check paragraph', function () {\r\n                it('input: \" \",\\n\\toutput: \"<p></p>\"', function () {\r\n                    // Arrange\r\n                    var input = ' ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = ' ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<p></p>');\r\n                });\r\n            });\r\n    });\r\n});\r\n//# sourceMappingURL=MD2HTML.spec.js.map",
+    "content": "\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\nconst MDReplacer_1 = require(\"./../src/MDReplacer\");\r\nlet replacerDict = new MDReplacer_1.MDReplacer().dictionary;\r\nlet dictString = 'dict' + replacerDict.toString();\r\n/**\r\n * this are test for the mardown replacer\r\n * @test {MDReplacer}\r\n */\r\ndescribe('This project is about making a simple markdown parser.', () => {\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check empty input', () => {\r\n        it('input : \"\",' + dictString + ' , output: \"\"', () => {\r\n            // Arrange\r\n            let input = '';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('');\r\n        });\r\n    });\r\n    /**\r\n    * @test {MDReplacer#replace}\r\n    */\r\n    describe('check simple input of each type', () => {\r\n        it('input : \"# Heading1\", ' + dictString + ', output: \"<h1>Heading1</h1>\"', () => {\r\n            // Arrange\r\n            let input = '# Heading1';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Heading1</h1>');\r\n        });\r\n        it('input : \"## Heading2\", ' + dictString + ', output: \"<h2>Heading2</h2>\"', () => {\r\n            // Arrange\r\n            let input = '## Heading2';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h2>Heading2</h2>');\r\n        });\r\n        it('input : \"**BoldText**\", ' + dictString + ', output: \"<b>BoldText</b>\"', () => {\r\n            // Arrange\r\n            let input = '**BoldText**';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>BoldText</b>');\r\n        });\r\n        it('input : \"*ItalicText*\", ' + dictString + ', output: \"<i>ItalicText</i>\"', () => {\r\n            // Arrange\r\n            let input = '*ItalicText*';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<i>ItalicText</i>');\r\n        });\r\n        it('input : \"* List\", ' + dictString + ', output: \"<ul><li>List</li></ul>\"', () => {\r\n            // Arrange\r\n            let input = '* List';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>List</li></ul>');\r\n        });\r\n        it('input : \">Cite text\", ' + dictString + ', output: \"<blockquote><p>Cite text</p></blockquote>\"', () => {\r\n            // Arrange\r\n            let input = '>Cite text';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<blockquote><p>Cite text</p></blockquote>');\r\n        });\r\n        it('input : \" Paragraph\", ' + dictString + ', output: \"<p>Paragraph</p>\"', () => {\r\n            // Arrange\r\n            let input = ' Paragraph';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<p>Paragraph</p>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line input', () => {\r\n        it('input : \"# Test text \\\\n * with list\", ' + dictString + ', output: \"<h1>Test text</h1><br/><ul><li>with list</li></ul>\"', () => {\r\n            // Arrange\r\n            let input = '# Test text \\n* with list';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text </h1><br/><ul><li>with list</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line list input', () => {\r\n        it('input : \"# Test text\\\\n* list item 1\\\\n* list item 2\\\\n* list item 3\", \\n\\t' + dictString + ',\\n\\toutput: \"<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', () => {\r\n            // Arrange\r\n            let input = '# Test text\\n* list item 1\\n* list item 2\\n* list item 3';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check bolt and italic input', () => {\r\n        it('input : \"**Test** *text*\", \\n\\t' + dictString + ',\\n\\toutput: \"<b>Test</b> <i>text</i>\"', () => {\r\n            // Arrange\r\n            let input = '**Test** *text*';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            let result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b> <i>text</i>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceDouble}\r\n     */\r\n    describe('MDReplacer replace double tags', () => {\r\n        it('input: \"**Test**, \\n\\toutput: \"<b>Test</b>\"', () => {\r\n            // Arrange\r\n            let input = '**Test**';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            let key = '**';\r\n            // Act\r\n            let result = markdownReplacer.replaceDouble(input, key);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#startsWith}\r\n     */\r\n    describe('MDReplacer check startWith method', () => {\r\n        describe('method result true', () => {\r\n            it('input: \"> test\",\\n\\toutput: \"true\"', () => {\r\n                // Arrange\r\n                let input = '> test';\r\n                let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                let key = '>';\r\n                // Act\r\n                let result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(true);\r\n            });\r\n        });\r\n        describe('method fails', () => {\r\n            it('input: \" test\",\\n\\toutput: \"true\"', () => {\r\n                // Arrange\r\n                let input = ' test';\r\n                let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                let key = '>';\r\n                // Act\r\n                let result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(false);\r\n            });\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#combineMultiLineTags}\r\n     */\r\n    describe('MDReplacer combineMultiLineTags', () => {\r\n        it('input: \"<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>\",\\n\\toutput: \"<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', () => {\r\n            // Arrange\r\n            let input = '<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>';\r\n            let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            let key = '>';\r\n            // Act\r\n            let result = markdownReplacer.combineMultiLineTags(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceKey}\r\n     */\r\n    describe('MDReplacer check all different keys', () => {\r\n        describe('check heading 1', () => {\r\n            it('input: \"# \",\\n\\toutput: \"<h1></h1>\"', () => {\r\n                // Arrange\r\n                let input = '# ';\r\n                let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                let key = '# ';\r\n                // Act\r\n                let result = markdownReplacer.replaceKey(input, key);\r\n                // Assert\r\n                expect(result).toBe('<h1></h1>');\r\n            });\r\n        }),\r\n            describe('check heading 2', () => {\r\n                it('input: \"## \",\\n\\toutput: \"<h2></h2>\"', () => {\r\n                    // Arrange\r\n                    let input = '## ';\r\n                    let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    let key = '## ';\r\n                    // Act\r\n                    let result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<h2></h2>');\r\n                });\r\n            }),\r\n            describe('check list', () => {\r\n                it('input: \"* \",\\n\\toutput: \"<ul><li></li></ul>\"', () => {\r\n                    // Arrange\r\n                    let input = '* ';\r\n                    let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    let key = '* ';\r\n                    // Act\r\n                    let result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<ul><li></li></ul>');\r\n                });\r\n            }),\r\n            describe('check bold', () => {\r\n                it('input: \"**** \",\\n\\toutput: \"<b></b>\"', () => {\r\n                    // Arrange\r\n                    let input = '****';\r\n                    let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    let key = '**';\r\n                    // Act\r\n                    let result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<b></b>');\r\n                });\r\n            }),\r\n            describe('check italic', () => {\r\n                it('input: \"**\",\\n\\toutput: \"<i></i>\"', () => {\r\n                    // Arrange\r\n                    let input = '**';\r\n                    let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    let key = '**';\r\n                    // Act\r\n                    let result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<i></i>');\r\n                });\r\n            }),\r\n            describe('check cite text', () => {\r\n                it('input: \">\",\\n\\toutput: \"<blockquote><p></p></blockquote>\"', () => {\r\n                    // Arrange\r\n                    let input = '>';\r\n                    let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    let key = '>';\r\n                    // Act\r\n                    let result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<blockquote><p></p></blockquote>');\r\n                });\r\n            }),\r\n            describe('check paragraph', () => {\r\n                it('input: \" \",\\n\\toutput: \"<p></p>\"', () => {\r\n                    // Arrange\r\n                    let input = ' ';\r\n                    let markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    let key = ' ';\r\n                    // Act\r\n                    let result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<p></p>');\r\n                });\r\n            });\r\n    });\r\n});\r\n//# sourceMappingURL=MD2HTML.spec.js.map",
     "static": true,
     "longname": "spec/MD2HTML.spec.js",
     "access": null,
@@ -896,7 +1104,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 68,
+    "__docId__": 76,
     "kind": "testDescribe",
     "name": "describe0",
     "testId": 0,
@@ -918,7 +1126,7 @@
     ]
   },
   {
-    "__docId__": 69,
+    "__docId__": 77,
     "kind": "testDescribe",
     "name": "describe1",
     "testId": 1,
@@ -940,7 +1148,7 @@
     ]
   },
   {
-    "__docId__": 70,
+    "__docId__": 78,
     "kind": "testIt",
     "name": "it2",
     "testId": 2,
@@ -952,7 +1160,7 @@
     "lineNumber": 15
   },
   {
-    "__docId__": 71,
+    "__docId__": 79,
     "kind": "testDescribe",
     "name": "describe3",
     "testId": 3,
@@ -974,7 +1182,7 @@
     ]
   },
   {
-    "__docId__": 72,
+    "__docId__": 80,
     "kind": "testIt",
     "name": "it4",
     "testId": 4,
@@ -986,7 +1194,7 @@
     "lineNumber": 29
   },
   {
-    "__docId__": 73,
+    "__docId__": 81,
     "kind": "testIt",
     "name": "it5",
     "testId": 5,
@@ -998,7 +1206,7 @@
     "lineNumber": 38
   },
   {
-    "__docId__": 74,
+    "__docId__": 82,
     "kind": "testIt",
     "name": "it6",
     "testId": 6,
@@ -1010,7 +1218,7 @@
     "lineNumber": 47
   },
   {
-    "__docId__": 75,
+    "__docId__": 83,
     "kind": "testIt",
     "name": "it7",
     "testId": 7,
@@ -1022,7 +1230,7 @@
     "lineNumber": 56
   },
   {
-    "__docId__": 76,
+    "__docId__": 84,
     "kind": "testIt",
     "name": "it8",
     "testId": 8,
@@ -1034,7 +1242,7 @@
     "lineNumber": 65
   },
   {
-    "__docId__": 77,
+    "__docId__": 85,
     "kind": "testIt",
     "name": "it9",
     "testId": 9,
@@ -1046,7 +1254,7 @@
     "lineNumber": 74
   },
   {
-    "__docId__": 78,
+    "__docId__": 86,
     "kind": "testIt",
     "name": "it10",
     "testId": 10,
@@ -1058,7 +1266,7 @@
     "lineNumber": 83
   },
   {
-    "__docId__": 79,
+    "__docId__": 87,
     "kind": "testDescribe",
     "name": "describe11",
     "testId": 11,
@@ -1080,7 +1288,7 @@
     ]
   },
   {
-    "__docId__": 80,
+    "__docId__": 88,
     "kind": "testIt",
     "name": "it12",
     "testId": 12,
@@ -1092,7 +1300,7 @@
     "lineNumber": 97
   },
   {
-    "__docId__": 81,
+    "__docId__": 89,
     "kind": "testDescribe",
     "name": "describe13",
     "testId": 13,
@@ -1114,7 +1322,7 @@
     ]
   },
   {
-    "__docId__": 82,
+    "__docId__": 90,
     "kind": "testIt",
     "name": "it14",
     "testId": 14,
@@ -1126,7 +1334,7 @@
     "lineNumber": 111
   },
   {
-    "__docId__": 83,
+    "__docId__": 91,
     "kind": "testDescribe",
     "name": "describe15",
     "testId": 15,
@@ -1148,7 +1356,7 @@
     ]
   },
   {
-    "__docId__": 84,
+    "__docId__": 92,
     "kind": "testIt",
     "name": "it16",
     "testId": 16,
@@ -1160,7 +1368,7 @@
     "lineNumber": 125
   },
   {
-    "__docId__": 85,
+    "__docId__": 93,
     "kind": "testDescribe",
     "name": "describe17",
     "testId": 17,
@@ -1182,7 +1390,7 @@
     ]
   },
   {
-    "__docId__": 86,
+    "__docId__": 94,
     "kind": "testIt",
     "name": "it18",
     "testId": 18,
@@ -1195,7 +1403,7 @@
     "lineNumber": 139
   },
   {
-    "__docId__": 87,
+    "__docId__": 95,
     "kind": "testDescribe",
     "name": "describe19",
     "testId": 19,
@@ -1217,7 +1425,7 @@
     ]
   },
   {
-    "__docId__": 88,
+    "__docId__": 96,
     "kind": "testDescribe",
     "name": "describe20",
     "testId": 20,
@@ -1230,7 +1438,7 @@
     "lineNumber": 154
   },
   {
-    "__docId__": 89,
+    "__docId__": 97,
     "kind": "testIt",
     "name": "it21",
     "testId": 21,
@@ -1243,7 +1451,7 @@
     "lineNumber": 155
   },
   {
-    "__docId__": 90,
+    "__docId__": 98,
     "kind": "testDescribe",
     "name": "describe22",
     "testId": 22,
@@ -1256,7 +1464,7 @@
     "lineNumber": 166
   },
   {
-    "__docId__": 91,
+    "__docId__": 99,
     "kind": "testIt",
     "name": "it23",
     "testId": 23,
@@ -1269,7 +1477,7 @@
     "lineNumber": 167
   },
   {
-    "__docId__": 92,
+    "__docId__": 100,
     "kind": "testDescribe",
     "name": "describe24",
     "testId": 24,
@@ -1291,7 +1499,7 @@
     ]
   },
   {
-    "__docId__": 93,
+    "__docId__": 101,
     "kind": "testIt",
     "name": "it25",
     "testId": 25,
@@ -1304,7 +1512,7 @@
     "lineNumber": 183
   },
   {
-    "__docId__": 94,
+    "__docId__": 102,
     "kind": "testDescribe",
     "name": "describe26",
     "testId": 26,
@@ -1326,7 +1534,7 @@
     ]
   },
   {
-    "__docId__": 95,
+    "__docId__": 103,
     "kind": "testIt",
     "name": "it27",
     "testId": 27,
@@ -1339,7 +1547,7 @@
     "lineNumber": 199
   },
   {
-    "__docId__": 96,
+    "__docId__": 104,
     "kind": "testIt",
     "name": "it28",
     "testId": 28,
@@ -1352,7 +1560,7 @@
     "lineNumber": 211
   },
   {
-    "__docId__": 97,
+    "__docId__": 105,
     "kind": "testIt",
     "name": "it29",
     "testId": 29,
@@ -1365,7 +1573,7 @@
     "lineNumber": 223
   },
   {
-    "__docId__": 98,
+    "__docId__": 106,
     "kind": "testIt",
     "name": "it30",
     "testId": 30,
@@ -1378,7 +1586,7 @@
     "lineNumber": 235
   },
   {
-    "__docId__": 99,
+    "__docId__": 107,
     "kind": "testIt",
     "name": "it31",
     "testId": 31,
@@ -1391,7 +1599,7 @@
     "lineNumber": 247
   },
   {
-    "__docId__": 100,
+    "__docId__": 108,
     "kind": "testIt",
     "name": "it32",
     "testId": 32,
@@ -1404,7 +1612,7 @@
     "lineNumber": 259
   },
   {
-    "__docId__": 101,
+    "__docId__": 109,
     "kind": "testIt",
     "name": "it33",
     "testId": 33,
