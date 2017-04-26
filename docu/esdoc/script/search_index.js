@@ -330,108 +330,6 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber6",
-    "This project is about making a simple markdown parser.",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber105",
-    "This project is about making a simple markdown parser. check bolt and italic input",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber106",
-    "This project is about making a simple markdown parser. check bolt and italic input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber7",
-    "This project is about making a simple markdown parser. check empty input",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber8",
-    "This project is about making a simple markdown parser. check empty input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber83",
-    "This project is about making a simple markdown parser. check multi line input",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber84",
-    "This project is about making a simple markdown parser. check multi line input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber94",
-    "This project is about making a simple markdown parser. check multi line list input",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber95",
-    "This project is about making a simple markdown parser. check multi line list input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber18",
-    "This project is about making a simple markdown parser. check simple input",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber55",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber64",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber37",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber28",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber19",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber73",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
-    "",
-    "test-file/spec/MD2HTML.spec.js.html#lineNumber46",
-    "This project is about making a simple markdown parser. check simple input ",
-    "test"
-  ],
-  [
     "spec/md2html.spec.js",
     "test-file/spec/MD2HTML.spec.js.html",
     "spec/MD2HTML.spec.js",
@@ -442,5 +340,209 @@ window.esdocSearchIndex = [
     "file/src/MDReplacer.js.html",
     "src/MDReplacer.js",
     "file"
+  ],
+  [
+    "mdreplacer mdreplacer,mdreplacer",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber10",
+    "this are test for the mardown replacer",
+    "test"
+  ],
+  [
+    "mdreplacer#replacekey mdreplacer#replacekey,mdreplacer#replacekey",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber197",
+    "this are test for the mardown replacer MDReplacer check all different keys",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber271",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \" \",\n\toutput: \"<p></p>\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber199",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \"# \",\n\toutput: \"<h1></h1>\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber211",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \"## \",\n\toutput: \"<h2></h2>\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber223",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \"* \",\n\toutput: \"<ul><li></li></ul>\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber247",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \"**\",\n\toutput: \"<i></i>\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber235",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \"**** \",\n\toutput: \"<b></b>\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber259",
+    "this are test for the mardown replacer MDReplacer check all different keys input: \">\",\n\toutput: \"<blockquote><p></p></blockquote>\"",
+    "test"
+  ],
+  [
+    "mdreplacer#startswith mdreplacer#startswith,mdreplacer#startswith",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber153",
+    "this are test for the mardown replacer MDReplacer check startWith method",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber166",
+    "this are test for the mardown replacer MDReplacer check startWith method method fails",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber167",
+    "this are test for the mardown replacer MDReplacer check startWith method method fails input: \" test\",\n\toutput: \"true\"",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber154",
+    "this are test for the mardown replacer MDReplacer check startWith method method result true",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber155",
+    "this are test for the mardown replacer MDReplacer check startWith method method result true input: \"> test\",\n\toutput: \"true\"",
+    "test"
+  ],
+  [
+    "mdreplacer#combinemultilinetags mdreplacer#combinemultilinetags,mdreplacer#combinemultilinetags",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber182",
+    "this are test for the mardown replacer MDReplacer combineMultiLineTags",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber183",
+    "this are test for the mardown replacer MDReplacer combineMultiLineTags input: \"<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>\",\n\toutput: \"<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"",
+    "test"
+  ],
+  [
+    "mdreplacer#replacedouble mdreplacer#replacedouble,mdreplacer#replacedouble",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber138",
+    "this are test for the mardown replacer MDReplacer replace double tags",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber139",
+    "this are test for the mardown replacer MDReplacer replace double tags input: \"**Test**, \n\toutput: \"<b>Test</b>\"",
+    "test"
+  ],
+  [
+    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber124",
+    "this are test for the mardown replacer check bolt and italic input",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber125",
+    "this are test for the mardown replacer check bolt and italic input ",
+    "test"
+  ],
+  [
+    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber14",
+    "this are test for the mardown replacer check empty input",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber15",
+    "this are test for the mardown replacer check empty input ",
+    "test"
+  ],
+  [
+    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber96",
+    "this are test for the mardown replacer check multi line input",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber97",
+    "this are test for the mardown replacer check multi line input ",
+    "test"
+  ],
+  [
+    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber110",
+    "this are test for the mardown replacer check multi line list input",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber111",
+    "this are test for the mardown replacer check multi line list input ",
+    "test"
+  ],
+  [
+    "mdreplacer#replace mdreplacer#replace,mdreplacer#replace",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber28",
+    "this are test for the mardown replacer check simple input of each type",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber38",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber47",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber56",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber83",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber29",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber74",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
+  ],
+  [
+    "",
+    "test-file/spec/MD2HTML.spec.js.html#lineNumber65",
+    "this are test for the mardown replacer check simple input of each type ",
+    "test"
   ]
 ]

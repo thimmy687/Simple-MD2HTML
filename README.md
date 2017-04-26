@@ -25,7 +25,7 @@ $ npm test
 ## Documentation
 
 * One part of the documentation is available as docx and pdf dirctly on [Github](https://github.com/thimmy687/Simple-MD2HTML/tree/master/docu)
-* A second code documentation is available as [esdoc](./index.html)
+* A second code documentation is available as esdoc, for this open the [index.html](./docu/esdoc/index.html) in your browser
 
 ## Contribution
 - Open the project with Visual Studio Code

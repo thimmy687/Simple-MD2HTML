@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "src/MDReplacer.js",
-    "content": "\"use strict\";\r\nexports.__esModule = true;\r\n/**\r\n * the Markdown Replacer class parse a markdown string to a HTML string\r\n */\r\nvar MDReplacer = (function () {\r\n    function MDReplacer() {\r\n        /**\r\n         * dictionary with md token and html replacement tags\r\n         */\r\n        this.dictionary = {\r\n            \"## \": {\r\n                start: '<h2>',\r\n                end: '</h2>'\r\n            },\r\n            \"# \": {\r\n                start: '<h1>',\r\n                end: '</h1>'\r\n            },\r\n            \"**\": {\r\n                start: '<b>',\r\n                end: '</b>'\r\n            },\r\n            \"* \": {\r\n                start: '<ul><li>',\r\n                end: '</li></ul>'\r\n            },\r\n            \"*\": {\r\n                start: '<i>',\r\n                end: '</i>'\r\n            },\r\n            \">\": {\r\n                start: '<blockquote><p>',\r\n                end: '</p></blockquote>'\r\n            },\r\n            \" \": {\r\n                start: '<p>',\r\n                end: '</p>'\r\n            }\r\n        };\r\n    }\r\n    /**\r\n     * the replace method splits the string in blocks and parse each line\r\n     * @param input : the whole document as string input\r\n     */\r\n    MDReplacer.prototype.replace = function (input) {\r\n        // return if input is empty\r\n        if (input == \"\")\r\n            return \"\";\r\n        var blocks = input.split('\\n');\r\n        var result = \"\";\r\n        for (var line in blocks) {\r\n            for (var key in this.dictionary) {\r\n                while (blocks[line].indexOf(key) !== -1) {\r\n                    if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {\r\n                        break;\r\n                    }\r\n                    blocks[line] = this.replaceKey(blocks[line], key);\r\n                }\r\n            }\r\n            if (line !== '0') {\r\n                result = result.concat('<br/>');\r\n            }\r\n            result = result.concat(blocks[line]);\r\n        }\r\n        result = this.combineMultiLineTags(result);\r\n        return result;\r\n    };\r\n    /**\r\n     * replace md tokens to html tags\r\n     * @param input: string to parse\r\n     * @param key: token to search\r\n     */\r\n    MDReplacer.prototype.replaceKey = function (input, key) {\r\n        var result = input;\r\n        switch (key) {\r\n            case '**':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            case '*':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            default:\r\n                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);\r\n                break;\r\n        }\r\n        return result;\r\n    };\r\n    /**\r\n     * If the markdown token has a start and end token,\r\n     * we replaces both\r\n     * @param input: string to parse\r\n     * @param key: token to replace\r\n     */\r\n    MDReplacer.prototype.replaceDouble = function (input, key) {\r\n        var result = input;\r\n        for (var i = 0; i < 2; i++) {\r\n            if (i === 0) {\r\n                result = result.replace(key, this.dictionary[key]['start']);\r\n            }\r\n            else {\r\n                result = result.replace(key, this.dictionary[key]['end']);\r\n            }\r\n        }\r\n        return result;\r\n    };\r\n    /**\r\n     * small helper method to check if the current token is a starting token\r\n     * @param input: string to check\r\n     * @param key: token to check\r\n     */\r\n    MDReplacer.prototype.startsWith = function (input, key) {\r\n        var inputNormalized = input;\r\n        if (key !== ' ') {\r\n            inputNormalized = input.replace(/ /g, '');\r\n        }\r\n        if (inputNormalized.charAt(0) === key) {\r\n            return true;\r\n        }\r\n        return false;\r\n    };\r\n    /**\r\n     * combine multiline list elements to one list\r\n     * @param input: string to parse\r\n     */\r\n    MDReplacer.prototype.combineMultiLineTags = function (input) {\r\n        var result = input;\r\n        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');\r\n        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');\r\n        return result;\r\n    };\r\n    return MDReplacer;\r\n}());\r\nexports.MDReplacer = MDReplacer;\r\n//# sourceMappingURL=MDReplacer.js.map",
+    "content": "\"use strict\";\r\nexports.__esModule = true;\r\n/**\r\n * the Markdown Replacer class parse a markdown string to a HTML string\r\n */\r\nvar MDReplacer = (function () {\r\n    function MDReplacer() {\r\n        /**\r\n         * dictionary with md token and html replacement tags\r\n         */\r\n        this.dictionary = {\r\n            \"## \": {\r\n                start: '<h2>',\r\n                end: '</h2>'\r\n            },\r\n            \"# \": {\r\n                start: '<h1>',\r\n                end: '</h1>'\r\n            },\r\n            \"**\": {\r\n                start: '<b>',\r\n                end: '</b>'\r\n            },\r\n            \"* \": {\r\n                start: '<ul><li>',\r\n                end: '</li></ul>'\r\n            },\r\n            \"*\": {\r\n                start: '<i>',\r\n                end: '</i>'\r\n            },\r\n            \">\": {\r\n                start: '<blockquote><p>',\r\n                end: '</p></blockquote>'\r\n            },\r\n            \" \": {\r\n                start: '<p>',\r\n                end: '</p>'\r\n            }\r\n        };\r\n    }\r\n    /**\r\n     * the replace method splits the string in blocks and parse each line\r\n     * @param input : the whole document as string input\r\n     * @return the parsed input string with all replaced tags\r\n     */\r\n    MDReplacer.prototype.replace = function (input) {\r\n        // return if input is empty\r\n        if (input == \"\")\r\n            return \"\";\r\n        var blocks = input.split('\\n');\r\n        var result = \"\";\r\n        for (var line in blocks) {\r\n            for (var key in this.dictionary) {\r\n                while (blocks[line].indexOf(key) !== -1) {\r\n                    if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {\r\n                        break;\r\n                    }\r\n                    blocks[line] = this.replaceKey(blocks[line], key);\r\n                }\r\n            }\r\n            if (line !== '0') {\r\n                result = result.concat('<br/>');\r\n            }\r\n            result = result.concat(blocks[line]);\r\n        }\r\n        result = this.combineMultiLineTags(result);\r\n        return result;\r\n    };\r\n    /**\r\n     * replace md tokens to html tags\r\n     * @param input: string to parse\r\n     * @param key: token to search\r\n     * @return this method returns the string with the replaced html tags\r\n     */\r\n    MDReplacer.prototype.replaceKey = function (input, key) {\r\n        var result = input;\r\n        switch (key) {\r\n            case '**':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            case '*':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            default:\r\n                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);\r\n                break;\r\n        }\r\n        return result;\r\n    };\r\n    /**\r\n     * If the markdown token has a start and end token,\r\n     * we replaces both\r\n     * @param input: string to parse\r\n     * @param key: token to replace\r\n     * @return parsed string with html tag at beginning and ending\r\n     */\r\n    MDReplacer.prototype.replaceDouble = function (input, key) {\r\n        var result = input;\r\n        var tmp = result.split(key);\r\n        if (tmp.length % 3 === 0) {\r\n            for (var i = 0; i < 2; i++) {\r\n                if (i === 0) {\r\n                    result = result.replace(key, this.dictionary[key]['start']);\r\n                }\r\n                else {\r\n                    result = result.replace(key, this.dictionary[key]['end']);\r\n                }\r\n            }\r\n        }\r\n        else if (key === '**' && tmp.length === 2) {\r\n            result = this.replaceDouble(result, '*');\r\n        }\r\n        return result;\r\n    };\r\n    /**\r\n     * small helper method to check if the current token is a starting token\r\n     * @param input: string to check\r\n     * @param key: token to check\r\n     * @return the result as boolean, true if it is first else false\r\n     */\r\n    MDReplacer.prototype.startsWith = function (input, key) {\r\n        var inputNormalized = input;\r\n        if (key !== ' ') {\r\n            inputNormalized = input.replace(/ /g, '');\r\n        }\r\n        if (inputNormalized.charAt(0) === key) {\r\n            return true;\r\n        }\r\n        return false;\r\n    };\r\n    /**\r\n     * combine multiline list elements to one list\r\n     * @param {string} input: string to parse\r\n     * @return {string} parsed string\r\n     */\r\n    MDReplacer.prototype.combineMultiLineTags = function (input) {\r\n        var result = input;\r\n        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');\r\n        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');\r\n        return result;\r\n    };\r\n    return MDReplacer;\r\n}());\r\nexports.MDReplacer = MDReplacer;\r\n//# sourceMappingURL=MDReplacer.js.map",
     "static": true,
     "longname": "src/MDReplacer.js",
     "access": null,
@@ -695,7 +695,7 @@
     "__docId__": 59,
     "kind": "testFile",
     "name": "spec/MD2HTML.spec.js",
-    "content": "\"use strict\";\r\nexports.__esModule = true;\r\nvar MDReplacer_1 = require(\"./../src/MDReplacer\");\r\nvar replacerDict = new MDReplacer_1.MDReplacer().dictionary;\r\nvar dictString = 'dict' + replacerDict.toString();\r\ndescribe('This project is about making a simple markdown parser.', function () {\r\n    describe('check empty input', function () {\r\n        it('input : \"\",' + dictString + ' , output: \"\"', function () {\r\n            // Arrange\r\n            var input = '';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('');\r\n        });\r\n    });\r\n    describe('check simple input', function () {\r\n        it('input : \"# Heading1\", ' + dictString + ', output: \"<h1>Heading1</h1>\"', function () {\r\n            // Arrange\r\n            var input = '# Heading1';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Heading1</h1>');\r\n        });\r\n        it('input : \"## Heading2\", ' + dictString + ', output: \"<h2>Heading2</h2>\"', function () {\r\n            // Arrange\r\n            var input = '## Heading2';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h2>Heading2</h2>');\r\n        });\r\n        it('input : \"**BoldText**\", ' + dictString + ', output: \"<b>BoldText</b>\"', function () {\r\n            // Arrange\r\n            var input = '**BoldText**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>BoldText</b>');\r\n        });\r\n        it('input : \"*ItalicText*\", ' + dictString + ', output: \"<i>ItalicText</i>\"', function () {\r\n            // Arrange\r\n            var input = '*ItalicText*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<i>ItalicText</i>');\r\n        });\r\n        it('input : \"* List\", ' + dictString + ', output: \"<ul><li>List</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '* List';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>List</li></ul>');\r\n        });\r\n        it('input : \">Cite text\", ' + dictString + ', output: \"<blockquote><p>Cite text</p></blockquote>\"', function () {\r\n            // Arrange\r\n            var input = '>Cite text';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<blockquote><p>Cite text</p></blockquote>');\r\n        });\r\n        it('input : \" Paragraph\", ' + dictString + ', output: \"<p>Paragraph</p>\"', function () {\r\n            // Arrange\r\n            var input = ' Paragraph';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<p>Paragraph</p>');\r\n        });\r\n    });\r\n    describe('check multi line input', function () {\r\n        it('input : \"# Test text \\\\n * with list\", ' + dictString + ', output: \"<h1>Test text</h1><br/><ul><li>with list</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text \\n* with list';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text </h1><br/><ul><li>with list</li></ul>');\r\n        });\r\n    });\r\n    describe('check multi line list input', function () {\r\n        it('input : \"# Test text\\\\n* list item 1\\\\n* list item 2\\\\n* list item 3\", \\n\\t' + dictString + ',\\n\\toutput: \"<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text\\n* list item 1\\n* list item 2\\n* list item 3';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    describe('check bolt and italic input', function () {\r\n        it('input : \"**Test** *text*\", \\n\\t' + dictString + ',\\n\\toutput: \"<b>Test</b> <i>text</i>\"', function () {\r\n            // Arrange\r\n            var input = '**Test** *text*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b> <i>text</i>');\r\n        });\r\n    });\r\n});\r\n//# sourceMappingURL=MD2HTML.spec.js.map",
+    "content": "\"use strict\";\r\nexports.__esModule = true;\r\nvar MDReplacer_1 = require(\"./../src/MDReplacer\");\r\nvar replacerDict = new MDReplacer_1.MDReplacer().dictionary;\r\nvar dictString = 'dict' + replacerDict.toString();\r\n/**\r\n * this are test for the mardown replacer\r\n * @test {MDReplacer}\r\n */\r\ndescribe('This project is about making a simple markdown parser.', function () {\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check empty input', function () {\r\n        it('input : \"\",' + dictString + ' , output: \"\"', function () {\r\n            // Arrange\r\n            var input = '';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('');\r\n        });\r\n    });\r\n    /**\r\n    * @test {MDReplacer#replace}\r\n    */\r\n    describe('check simple input of each type', function () {\r\n        it('input : \"# Heading1\", ' + dictString + ', output: \"<h1>Heading1</h1>\"', function () {\r\n            // Arrange\r\n            var input = '# Heading1';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Heading1</h1>');\r\n        });\r\n        it('input : \"## Heading2\", ' + dictString + ', output: \"<h2>Heading2</h2>\"', function () {\r\n            // Arrange\r\n            var input = '## Heading2';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h2>Heading2</h2>');\r\n        });\r\n        it('input : \"**BoldText**\", ' + dictString + ', output: \"<b>BoldText</b>\"', function () {\r\n            // Arrange\r\n            var input = '**BoldText**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>BoldText</b>');\r\n        });\r\n        it('input : \"*ItalicText*\", ' + dictString + ', output: \"<i>ItalicText</i>\"', function () {\r\n            // Arrange\r\n            var input = '*ItalicText*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<i>ItalicText</i>');\r\n        });\r\n        it('input : \"* List\", ' + dictString + ', output: \"<ul><li>List</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '* List';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>List</li></ul>');\r\n        });\r\n        it('input : \">Cite text\", ' + dictString + ', output: \"<blockquote><p>Cite text</p></blockquote>\"', function () {\r\n            // Arrange\r\n            var input = '>Cite text';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<blockquote><p>Cite text</p></blockquote>');\r\n        });\r\n        it('input : \" Paragraph\", ' + dictString + ', output: \"<p>Paragraph</p>\"', function () {\r\n            // Arrange\r\n            var input = ' Paragraph';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<p>Paragraph</p>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line input', function () {\r\n        it('input : \"# Test text \\\\n * with list\", ' + dictString + ', output: \"<h1>Test text</h1><br/><ul><li>with list</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text \\n* with list';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text </h1><br/><ul><li>with list</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check multi line list input', function () {\r\n        it('input : \"# Test text\\\\n* list item 1\\\\n* list item 2\\\\n* list item 3\", \\n\\t' + dictString + ',\\n\\toutput: \"<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '# Test text\\n* list item 1\\n* list item 2\\n* list item 3';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<h1>Test text</h1><br/><ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replace}\r\n     */\r\n    describe('check bolt and italic input', function () {\r\n        it('input : \"**Test** *text*\", \\n\\t' + dictString + ',\\n\\toutput: \"<b>Test</b> <i>text</i>\"', function () {\r\n            // Arrange\r\n            var input = '**Test** *text*';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            // Act\r\n            var result = markdownReplacer.replace(input);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b> <i>text</i>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceDouble}\r\n     */\r\n    describe('MDReplacer replace double tags', function () {\r\n        it('input: \"**Test**, \\n\\toutput: \"<b>Test</b>\"', function () {\r\n            // Arrange\r\n            var input = '**Test**';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            var key = '**';\r\n            // Act\r\n            var result = markdownReplacer.replaceDouble(input, key);\r\n            // Assert\r\n            expect(result).toBe('<b>Test</b>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#startsWith}\r\n     */\r\n    describe('MDReplacer check startWith method', function () {\r\n        describe('method result true', function () {\r\n            it('input: \"> test\",\\n\\toutput: \"true\"', function () {\r\n                // Arrange\r\n                var input = '> test';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '>';\r\n                // Act\r\n                var result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(true);\r\n            });\r\n        });\r\n        describe('method fails', function () {\r\n            it('input: \" test\",\\n\\toutput: \"true\"', function () {\r\n                // Arrange\r\n                var input = ' test';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '>';\r\n                // Act\r\n                var result = markdownReplacer.startsWith(input, key);\r\n                // Assert\r\n                expect(result).toBe(false);\r\n            });\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#combineMultiLineTags}\r\n     */\r\n    describe('MDReplacer combineMultiLineTags', function () {\r\n        it('input: \"<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>\",\\n\\toutput: \"<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"', function () {\r\n            // Arrange\r\n            var input = '<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>';\r\n            var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n            var key = '>';\r\n            // Act\r\n            var result = markdownReplacer.combineMultiLineTags(input);\r\n            // Assert\r\n            expect(result).toBe('<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>');\r\n        });\r\n    });\r\n    /**\r\n     * @test {MDReplacer#replaceKey}\r\n     */\r\n    describe('MDReplacer check all different keys', function () {\r\n        describe('check heading 1', function () {\r\n            it('input: \"# \",\\n\\toutput: \"<h1></h1>\"', function () {\r\n                // Arrange\r\n                var input = '# ';\r\n                var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                var key = '# ';\r\n                // Act\r\n                var result = markdownReplacer.replaceKey(input, key);\r\n                // Assert\r\n                expect(result).toBe('<h1></h1>');\r\n            });\r\n        }),\r\n            describe('check heading 2', function () {\r\n                it('input: \"## \",\\n\\toutput: \"<h2></h2>\"', function () {\r\n                    // Arrange\r\n                    var input = '## ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '## ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<h2></h2>');\r\n                });\r\n            }),\r\n            describe('check list', function () {\r\n                it('input: \"* \",\\n\\toutput: \"<ul><li></li></ul>\"', function () {\r\n                    // Arrange\r\n                    var input = '* ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '* ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<ul><li></li></ul>');\r\n                });\r\n            }),\r\n            describe('check bold', function () {\r\n                it('input: \"**** \",\\n\\toutput: \"<b></b>\"', function () {\r\n                    // Arrange\r\n                    var input = '****';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '**';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<b></b>');\r\n                });\r\n            }),\r\n            describe('check italic', function () {\r\n                it('input: \"**\",\\n\\toutput: \"<i></i>\"', function () {\r\n                    // Arrange\r\n                    var input = '**';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '**';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<i></i>');\r\n                });\r\n            }),\r\n            describe('check cite text', function () {\r\n                it('input: \">\",\\n\\toutput: \"<blockquote><p></p></blockquote>\"', function () {\r\n                    // Arrange\r\n                    var input = '>';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = '>';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<blockquote><p></p></blockquote>');\r\n                });\r\n            }),\r\n            describe('check paragraph', function () {\r\n                it('input: \" \",\\n\\toutput: \"<p></p>\"', function () {\r\n                    // Arrange\r\n                    var input = ' ';\r\n                    var markdownReplacer = new MDReplacer_1.MDReplacer();\r\n                    var key = ' ';\r\n                    // Act\r\n                    var result = markdownReplacer.replaceKey(input, key);\r\n                    // Assert\r\n                    expect(result).toBe('<p></p>');\r\n                });\r\n            });\r\n    });\r\n});\r\n//# sourceMappingURL=MD2HTML.spec.js.map",
     "static": true,
     "longname": "spec/MD2HTML.spec.js",
     "access": null,
@@ -712,8 +712,17 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0",
     "access": null,
-    "description": "This project is about making a simple markdown parser.",
-    "lineNumber": 6
+    "description": "this are test for the mardown replacer",
+    "lineNumber": 10,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer"
+    ]
   },
   {
     "__docId__": 61,
@@ -726,7 +735,16 @@
     "longname": "spec/MD2HTML.spec.js~describe0.describe1",
     "access": null,
     "description": "check empty input",
-    "lineNumber": 7
+    "lineNumber": 14,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replace}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replace"
+    ]
   },
   {
     "__docId__": 62,
@@ -738,7 +756,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe1.it2",
     "access": null,
-    "lineNumber": 8
+    "lineNumber": 15
   },
   {
     "__docId__": 63,
@@ -750,8 +768,17 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3",
     "access": null,
-    "description": "check simple input",
-    "lineNumber": 18
+    "description": "check simple input of each type",
+    "lineNumber": 28,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replace}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replace"
+    ]
   },
   {
     "__docId__": 64,
@@ -763,7 +790,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it4",
     "access": null,
-    "lineNumber": 19
+    "lineNumber": 29
   },
   {
     "__docId__": 65,
@@ -775,7 +802,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it5",
     "access": null,
-    "lineNumber": 28
+    "lineNumber": 38
   },
   {
     "__docId__": 66,
@@ -787,7 +814,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it6",
     "access": null,
-    "lineNumber": 37
+    "lineNumber": 47
   },
   {
     "__docId__": 67,
@@ -799,7 +826,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it7",
     "access": null,
-    "lineNumber": 46
+    "lineNumber": 56
   },
   {
     "__docId__": 68,
@@ -811,7 +838,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it8",
     "access": null,
-    "lineNumber": 55
+    "lineNumber": 65
   },
   {
     "__docId__": 69,
@@ -823,7 +850,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it9",
     "access": null,
-    "lineNumber": 64
+    "lineNumber": 74
   },
   {
     "__docId__": 70,
@@ -835,7 +862,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe3.it10",
     "access": null,
-    "lineNumber": 73
+    "lineNumber": 83
   },
   {
     "__docId__": 71,
@@ -848,7 +875,16 @@
     "longname": "spec/MD2HTML.spec.js~describe0.describe11",
     "access": null,
     "description": "check multi line input",
-    "lineNumber": 83
+    "lineNumber": 96,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replace}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replace"
+    ]
   },
   {
     "__docId__": 72,
@@ -860,7 +896,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe11.it12",
     "access": null,
-    "lineNumber": 84
+    "lineNumber": 97
   },
   {
     "__docId__": 73,
@@ -873,7 +909,16 @@
     "longname": "spec/MD2HTML.spec.js~describe0.describe13",
     "access": null,
     "description": "check multi line list input",
-    "lineNumber": 94
+    "lineNumber": 110,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replace}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replace"
+    ]
   },
   {
     "__docId__": 74,
@@ -885,7 +930,7 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe13.it14",
     "access": null,
-    "lineNumber": 95
+    "lineNumber": 111
   },
   {
     "__docId__": 75,
@@ -898,7 +943,16 @@
     "longname": "spec/MD2HTML.spec.js~describe0.describe15",
     "access": null,
     "description": "check bolt and italic input",
-    "lineNumber": 105
+    "lineNumber": 124,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replace}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replace"
+    ]
   },
   {
     "__docId__": 76,
@@ -910,6 +964,263 @@
     "static": true,
     "longname": "spec/MD2HTML.spec.js~describe0.describe15.it16",
     "access": null,
-    "lineNumber": 106
+    "lineNumber": 125
+  },
+  {
+    "__docId__": 77,
+    "kind": "testDescribe",
+    "name": "describe17",
+    "testId": 17,
+    "memberof": "spec/MD2HTML.spec.js~describe0",
+    "testDepth": 1,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe17",
+    "access": null,
+    "description": "MDReplacer replace double tags",
+    "lineNumber": 138,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replaceDouble}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replaceDouble"
+    ]
+  },
+  {
+    "__docId__": 78,
+    "kind": "testIt",
+    "name": "it18",
+    "testId": 18,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe17",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe17.it18",
+    "access": null,
+    "description": "input: \"**Test**, \n\toutput: \"<b>Test</b>\"",
+    "lineNumber": 139
+  },
+  {
+    "__docId__": 79,
+    "kind": "testDescribe",
+    "name": "describe19",
+    "testId": 19,
+    "memberof": "spec/MD2HTML.spec.js~describe0",
+    "testDepth": 1,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe19",
+    "access": null,
+    "description": "MDReplacer check startWith method",
+    "lineNumber": 153,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#startsWith}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#startsWith"
+    ]
+  },
+  {
+    "__docId__": 80,
+    "kind": "testDescribe",
+    "name": "describe20",
+    "testId": 20,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe19",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe19.describe20",
+    "access": null,
+    "description": "method result true",
+    "lineNumber": 154
+  },
+  {
+    "__docId__": 81,
+    "kind": "testIt",
+    "name": "it21",
+    "testId": 21,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe19.describe20",
+    "testDepth": 3,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe19.describe20.it21",
+    "access": null,
+    "description": "input: \"> test\",\n\toutput: \"true\"",
+    "lineNumber": 155
+  },
+  {
+    "__docId__": 82,
+    "kind": "testDescribe",
+    "name": "describe22",
+    "testId": 22,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe19",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe19.describe22",
+    "access": null,
+    "description": "method fails",
+    "lineNumber": 166
+  },
+  {
+    "__docId__": 83,
+    "kind": "testIt",
+    "name": "it23",
+    "testId": 23,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe19.describe22",
+    "testDepth": 3,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe19.describe22.it23",
+    "access": null,
+    "description": "input: \" test\",\n\toutput: \"true\"",
+    "lineNumber": 167
+  },
+  {
+    "__docId__": 84,
+    "kind": "testDescribe",
+    "name": "describe24",
+    "testId": 24,
+    "memberof": "spec/MD2HTML.spec.js~describe0",
+    "testDepth": 1,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe24",
+    "access": null,
+    "description": "MDReplacer combineMultiLineTags",
+    "lineNumber": 182,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#combineMultiLineTags}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#combineMultiLineTags"
+    ]
+  },
+  {
+    "__docId__": 85,
+    "kind": "testIt",
+    "name": "it25",
+    "testId": 25,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe24",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe24.it25",
+    "access": null,
+    "description": "input: \"<ul><li>list item 1</li></ul><br/><ul><li>list item 2</li></ul><br/><ul><li>list item 3</li></ul>\",\n\toutput: \"<ul><li>list item 1</li><br/><li>list item 2</li><br/><li>list item 3</li></ul>\"",
+    "lineNumber": 183
+  },
+  {
+    "__docId__": 86,
+    "kind": "testDescribe",
+    "name": "describe26",
+    "testId": 26,
+    "memberof": "spec/MD2HTML.spec.js~describe0",
+    "testDepth": 1,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26",
+    "access": null,
+    "description": "MDReplacer check all different keys",
+    "lineNumber": 197,
+    "unknown": [
+      {
+        "tagName": "@test",
+        "tagValue": "{MDReplacer#replaceKey}"
+      }
+    ],
+    "testTargets": [
+      "MDReplacer#replaceKey"
+    ]
+  },
+  {
+    "__docId__": 87,
+    "kind": "testIt",
+    "name": "it27",
+    "testId": 27,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it27",
+    "access": null,
+    "description": "input: \"# \",\n\toutput: \"<h1></h1>\"",
+    "lineNumber": 199
+  },
+  {
+    "__docId__": 88,
+    "kind": "testIt",
+    "name": "it28",
+    "testId": 28,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it28",
+    "access": null,
+    "description": "input: \"## \",\n\toutput: \"<h2></h2>\"",
+    "lineNumber": 211
+  },
+  {
+    "__docId__": 89,
+    "kind": "testIt",
+    "name": "it29",
+    "testId": 29,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it29",
+    "access": null,
+    "description": "input: \"* \",\n\toutput: \"<ul><li></li></ul>\"",
+    "lineNumber": 223
+  },
+  {
+    "__docId__": 90,
+    "kind": "testIt",
+    "name": "it30",
+    "testId": 30,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it30",
+    "access": null,
+    "description": "input: \"**** \",\n\toutput: \"<b></b>\"",
+    "lineNumber": 235
+  },
+  {
+    "__docId__": 91,
+    "kind": "testIt",
+    "name": "it31",
+    "testId": 31,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it31",
+    "access": null,
+    "description": "input: \"**\",\n\toutput: \"<i></i>\"",
+    "lineNumber": 247
+  },
+  {
+    "__docId__": 92,
+    "kind": "testIt",
+    "name": "it32",
+    "testId": 32,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it32",
+    "access": null,
+    "description": "input: \">\",\n\toutput: \"<blockquote><p></p></blockquote>\"",
+    "lineNumber": 259
+  },
+  {
+    "__docId__": 93,
+    "kind": "testIt",
+    "name": "it33",
+    "testId": 33,
+    "memberof": "spec/MD2HTML.spec.js~describe0.describe26",
+    "testDepth": 2,
+    "static": true,
+    "longname": "spec/MD2HTML.spec.js~describe0.describe26.it33",
+    "access": null,
+    "description": "input: \" \",\n\toutput: \"<p></p>\"",
+    "lineNumber": 271
   }
 ]
