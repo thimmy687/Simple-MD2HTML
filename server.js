@@ -14,11 +14,17 @@ app.use("/js", express.static(__dirname + '/public/js'));
 MongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db', function (err, database) {
     // start the server
     if (err)
-        return console.log(err);
+        return console.log('DB-CONNECTION-ERR: ' + err);
     db = database;
     // set port to listen
     app.listen(process.env.PORT || 3000, function () {
         console.log('listening on 3000');
+    });
+    //clean history on startup
+    db.collection('inputs').drop(function (err, result) {
+        if (err)
+            return console.log('WARN:' + err);
+        console.log("INFO: history clean!");
     });
 });
 // middleware 
@@ -49,16 +55,12 @@ app.post('/inputs', function (req, res) {
     var history;
     db.collection('inputs').save(toSave, function (err, result) {
         if (err)
-            return console.log(err);
-        console.log('saved to database');
+            return console.log('SAVE-DB-ERR:' + err);
+        console.log('INFO: saved to database');
         db.collection('inputs').find().toArray(function (err, result) {
             if (err)
-                return console.log(err);
+                return console.log('FIND-ON-DB-ERR: ' + err);
             history = result;
-            var check = db.collection('inputs').find();
-            if (check.count() > 20) {
-                db.collection('inputs').findOneAndDelete({ name: 'input' });
-            }
             res.setHeader('Content-Type', 'application/json');
             res.redirect('/');
         });
@@ -85,8 +87,8 @@ app["delete"]('/inputs', function (req, res) {
     db.collection('inputs').drop(function (err, result) {
         if (err)
             return res.status(500).send(err);
-        console.log("delete something!");
-        res.status(200).send('Input deleted');
+        console.log("INFO: history clean!");
+        res.status(200).send("INFO: history clean!");
     });
 });
 //# sourceMappingURL=server.js.map

@@ -55,7 +55,7 @@ var MDReplacer = (function () {
                     if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {
                         break;
                     }
-                    blocks[line] = this.replaceKey(blocks[line], key, this.dictionary[key]);
+                    blocks[line] = this.replaceKey(blocks[line], key);
                 }
             }
             if (line !== '0') {
@@ -70,38 +70,36 @@ var MDReplacer = (function () {
      * replace md tokens to html tags
      * @param input: string to parse
      * @param key: token to search
-     * @param replacements: html tokens for replacements
      */
-    MDReplacer.prototype.replaceKey = function (input, key, replacements) {
+    MDReplacer.prototype.replaceKey = function (input, key) {
         var result = input;
         switch (key) {
             case '**':
-                result = this.replaceDouble(result, key, replacements);
+                result = this.replaceDouble(result, key);
                 break;
             case '*':
-                result = this.replaceDouble(result, key, replacements);
+                result = this.replaceDouble(result, key);
                 break;
             default:
-                result = result.replace(key, replacements['start']).concat(replacements['end']);
+                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);
                 break;
         }
         return result;
     };
     /**
-     * if the markdown token have a start and en token,
-     * we replace both
+     * If the markdown token has a start and end token,
+     * we replaces both
      * @param input: string to parse
      * @param key: token to replace
-     * @param replacements: html tags to insert
      */
-    MDReplacer.prototype.replaceDouble = function (input, key, replacements) {
+    MDReplacer.prototype.replaceDouble = function (input, key) {
         var result = input;
         for (var i = 0; i < 2; i++) {
             if (i === 0) {
-                result = result.replace(key, replacements['start']);
+                result = result.replace(key, this.dictionary[key]['start']);
             }
             else {
-                result = result.replace(key, replacements['end']);
+                result = result.replace(key, this.dictionary[key]['end']);
             }
         }
         return result;
