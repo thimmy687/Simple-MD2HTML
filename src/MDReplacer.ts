@@ -133,7 +133,9 @@ export class MDReplacer {
     */
     combineListElements(input: string):string{
         let result = input;
-        result = result.replace(new RegExp('</li></ul><br/><ul><li>','g'),'</li><br/><li>')     
+        result = result.replace(new RegExp('</li></ul><br/><ul><li>','g'),'</li><br/><li>') 
+        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>','g'),'</p><br/><p>') 
+            
         return result;
     }
 }
