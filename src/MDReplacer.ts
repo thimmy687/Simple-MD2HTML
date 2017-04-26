@@ -129,7 +129,7 @@ export class MDReplacer {
 
    /**
     * combine multiline list elements to one list
-    * @param input: string to parse
+    * @param {string} input: string to parse
     */
     combineMultiLineTags(input: string):string{
         let result = input;

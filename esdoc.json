@@ -1,0 +1,8 @@
+{
+  "source": "./src",
+  "destination": "./docu/esdoc",
+  "test": {
+    "type": "mocha",
+    "source": "./spec"
+  }
+}

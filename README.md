@@ -22,6 +22,11 @@ This is a JavaScript/Typescript markdown to HTML parser with Visual Studio Code
 ```
 $ npm test
 ```
+## Documentation
+
+* One part of the documentation is available as docx and pdf dirctly on [Github](https://github.com/thimmy687/Simple-MD2HTML/tree/master/docu)
+* A second code documentation is available as [esdoc](./index.html)
+
 ## Contribution
 - Open the project with Visual Studio Code
 - Start the TypeScript-Compiler with [strg]+[shift]+[b]

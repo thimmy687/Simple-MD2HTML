@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">src/MDReplacer.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  <a href="test.html" data-ice="testLink">Test</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/MDReplacer.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&quot;use strict&quot;;
+exports.__esModule = true;
+/**
+ * the Markdown Replacer class parse a markdown string to a HTML string
+ */
+var MDReplacer = (function () {
+    function MDReplacer() {
+        /**
+         * dictionary with md token and html replacement tags
+         */
+        this.dictionary = {
+            &quot;## &quot;: {
+                start: &apos;&lt;h2&gt;&apos;,
+                end: &apos;&lt;/h2&gt;&apos;
+            },
+            &quot;# &quot;: {
+                start: &apos;&lt;h1&gt;&apos;,
+                end: &apos;&lt;/h1&gt;&apos;
+            },
+            &quot;**&quot;: {
+                start: &apos;&lt;b&gt;&apos;,
+                end: &apos;&lt;/b&gt;&apos;
+            },
+            &quot;* &quot;: {
+                start: &apos;&lt;ul&gt;&lt;li&gt;&apos;,
+                end: &apos;&lt;/li&gt;&lt;/ul&gt;&apos;
+            },
+            &quot;*&quot;: {
+                start: &apos;&lt;i&gt;&apos;,
+                end: &apos;&lt;/i&gt;&apos;
+            },
+            &quot;&gt;&quot;: {
+                start: &apos;&lt;blockquote&gt;&lt;p&gt;&apos;,
+                end: &apos;&lt;/p&gt;&lt;/blockquote&gt;&apos;
+            },
+            &quot; &quot;: {
+                start: &apos;&lt;p&gt;&apos;,
+                end: &apos;&lt;/p&gt;&apos;
+            }
+        };
+    }
+    /**
+     * the replace method splits the string in blocks and parse each line
+     * @param input : the whole document as string input
+     */
+    MDReplacer.prototype.replace = function (input) {
+        // return if input is empty
+        if (input == &quot;&quot;)
+            return &quot;&quot;;
+        var blocks = input.split(&apos;\n&apos;);
+        var result = &quot;&quot;;
+        for (var line in blocks) {
+            for (var key in this.dictionary) {
+                while (blocks[line].indexOf(key) !== -1) {
+                    if ((key === &apos;&gt;&apos; || key === &apos; &apos;) &amp;&amp; !this.startsWith(blocks[line], key)) {
+                        break;
+                    }
+                    blocks[line] = this.replaceKey(blocks[line], key);
+                }
+            }
+            if (line !== &apos;0&apos;) {
+                result = result.concat(&apos;&lt;br/&gt;&apos;);
+            }
+            result = result.concat(blocks[line]);
+        }
+        result = this.combineMultiLineTags(result);
+        return result;
+    };
+    /**
+     * replace md tokens to html tags
+     * @param input: string to parse
+     * @param key: token to search
+     */
+    MDReplacer.prototype.replaceKey = function (input, key) {
+        var result = input;
+        switch (key) {
+            case &apos;**&apos;:
+                result = this.replaceDouble(result, key);
+                break;
+            case &apos;*&apos;:
+                result = this.replaceDouble(result, key);
+                break;
+            default:
+                result = result.replace(key, this.dictionary[key][&apos;start&apos;]).concat(this.dictionary[key][&apos;end&apos;]);
+                break;
+        }
+        return result;
+    };
+    /**
+     * If the markdown token has a start and end token,
+     * we replaces both
+     * @param input: string to parse
+     * @param key: token to replace
+     */
+    MDReplacer.prototype.replaceDouble = function (input, key) {
+        var result = input;
+        for (var i = 0; i &lt; 2; i++) {
+            if (i === 0) {
+                result = result.replace(key, this.dictionary[key][&apos;start&apos;]);
+            }
+            else {
+                result = result.replace(key, this.dictionary[key][&apos;end&apos;]);
+            }
+        }
+        return result;
+    };
+    /**
+     * small helper method to check if the current token is a starting token
+     * @param input: string to check
+     * @param key: token to check
+     */
+    MDReplacer.prototype.startsWith = function (input, key) {
+        var inputNormalized = input;
+        if (key !== &apos; &apos;) {
+            inputNormalized = input.replace(/ /g, &apos;&apos;);
+        }
+        if (inputNormalized.charAt(0) === key) {
+            return true;
+        }
+        return false;
+    };
+    /**
+     * combine multiline list elements to one list
+     * @param input: string to parse
+     */
+    MDReplacer.prototype.combineMultiLineTags = function (input) {
+        var result = input;
+        result = result.replace(new RegExp(&apos;&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;&apos;, &apos;g&apos;), &apos;&lt;/li&gt;&lt;br/&gt;&lt;li&gt;&apos;);
+        result = result.replace(new RegExp(&apos;&lt;/p&gt;&lt;/blockquote&gt;&lt;br/&gt;&lt;blockquote&gt;&lt;p&gt;&apos;, &apos;g&apos;), &apos;&lt;/p&gt;&lt;br/&gt;&lt;p&gt;&apos;);
+        return result;
+    };
+    return MDReplacer;
+}());
+exports.MDReplacer = MDReplacer;
+//# sourceMappingURL=MDReplacer.js.map</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
