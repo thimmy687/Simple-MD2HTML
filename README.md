@@ -1,4 +1,6 @@
 # Simple Markdown parser
+[![Document](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML/badge.svg?t=0)](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML)
+
     by Ricardo Krause
     
 This is a JavaScript/Typescript markdown to HTML parser with Visual Studio Code
@@ -24,8 +26,9 @@ $ npm test
 ```
 ## Documentation
 
-* One part of the documentation is available as docx and pdf dirctly on [Github](https://github.com/thimmy687/Simple-MD2HTML/tree/master/docu)
-* A second code documentation is available as esdoc, for this open the [index.html](./docu/esdoc/index.html) in your browser
+* One part of the documentation is available as docx and pdf dirctly on [Github] 
+
+* Or see as [esdoc](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML)
 
 ## Contribution
 - Open the project with Visual Studio Code

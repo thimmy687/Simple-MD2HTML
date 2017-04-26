@@ -2,6 +2,9 @@
  * the Markdown Replacer class parse a markdown string to a HTML string
  */
 export class MDReplacer {
+    /**
+     * ctor
+     */
     constructor() { }
 
     /**

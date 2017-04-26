@@ -4,6 +4,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * the Markdown Replacer class parse a markdown string to a HTML string
  */
 class MDReplacer {
+    /**
+     * ctor
+     */
     constructor() {
         /**
          * dictionary with md token and html replacement tags

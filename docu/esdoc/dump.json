@@ -3,7 +3,7 @@
     "__docId__": 0,
     "kind": "file",
     "name": "src/MDReplacer.js",
-    "content": "\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/**\r\n * the Markdown Replacer class parse a markdown string to a HTML string\r\n */\r\nclass MDReplacer {\r\n    constructor() {\r\n        /**\r\n         * dictionary with md token and html replacement tags\r\n         */\r\n        this.dictionary = {\r\n            \"## \": {\r\n                start: '<h2>',\r\n                end: '</h2>'\r\n            },\r\n            \"# \": {\r\n                start: '<h1>',\r\n                end: '</h1>'\r\n            },\r\n            \"**\": {\r\n                start: '<b>',\r\n                end: '</b>'\r\n            },\r\n            \"* \": {\r\n                start: '<ul><li>',\r\n                end: '</li></ul>'\r\n            },\r\n            \"*\": {\r\n                start: '<i>',\r\n                end: '</i>'\r\n            },\r\n            \">\": {\r\n                start: '<blockquote><p>',\r\n                end: '</p></blockquote>'\r\n            },\r\n            \" \": {\r\n                start: '<p>',\r\n                end: '</p>'\r\n            }\r\n        };\r\n    }\r\n    /**\r\n     * the replace method splits the string in blocks and parse each line\r\n     * @param input : the whole document as string input\r\n     * @return the parsed input string with all replaced tags\r\n     */\r\n    replace(input) {\r\n        // return if input is empty\r\n        if (input == \"\")\r\n            return \"\";\r\n        let blocks = input.split('\\n');\r\n        let result = \"\";\r\n        for (let line in blocks) {\r\n            for (let key in this.dictionary) {\r\n                while (blocks[line].indexOf(key) !== -1) {\r\n                    if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {\r\n                        break;\r\n                    }\r\n                    blocks[line] = this.replaceKey(blocks[line], key);\r\n                }\r\n            }\r\n            if (line !== '0') {\r\n                result = result.concat('<br/>');\r\n            }\r\n            result = result.concat(blocks[line]);\r\n        }\r\n        result = this.combineMultiLineTags(result);\r\n        return result;\r\n    }\r\n    /**\r\n     * replace md tokens to html tags\r\n     * @param input: string to parse\r\n     * @param key: token to search\r\n     * @return this method returns the string with the replaced html tags\r\n     */\r\n    replaceKey(input, key) {\r\n        let result = input;\r\n        switch (key) {\r\n            case '**':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            case '*':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            default:\r\n                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);\r\n                break;\r\n        }\r\n        return result;\r\n    }\r\n    /**\r\n     * If the markdown token has a start and end token,\r\n     * we replaces both\r\n     * @param input: string to parse\r\n     * @param key: token to replace\r\n     * @return parsed string with html tag at beginning and ending\r\n     */\r\n    replaceDouble(input, key) {\r\n        let result = input;\r\n        let tmp = result.split(key);\r\n        if (tmp.length % 3 === 0) {\r\n            for (let i = 0; i < 2; i++) {\r\n                if (i === 0) {\r\n                    result = result.replace(key, this.dictionary[key]['start']);\r\n                }\r\n                else {\r\n                    result = result.replace(key, this.dictionary[key]['end']);\r\n                }\r\n            }\r\n        }\r\n        else if (key === '**' && tmp.length === 2) {\r\n            result = this.replaceDouble(result, '*');\r\n        }\r\n        return result;\r\n    }\r\n    /**\r\n     * small helper method to check if the current token is a starting token\r\n     * @param input: string to check\r\n     * @param key: token to check\r\n     * @return the result as boolean, true if it is first else false\r\n     */\r\n    startsWith(input, key) {\r\n        let inputNormalized = input;\r\n        if (key !== ' ') {\r\n            inputNormalized = input.replace(/ /g, '');\r\n        }\r\n        if (inputNormalized.charAt(0) === key) {\r\n            return true;\r\n        }\r\n        return false;\r\n    }\r\n    /**\r\n     * combine multiline list elements to one list\r\n     * @param {string} input: string to parse\r\n     * @return {string} parsed string\r\n     */\r\n    combineMultiLineTags(input) {\r\n        let result = input;\r\n        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');\r\n        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');\r\n        return result;\r\n    }\r\n}\r\nexports.MDReplacer = MDReplacer;\r\n//# sourceMappingURL=MDReplacer.js.map",
+    "content": "\"use strict\";\r\nObject.defineProperty(exports, \"__esModule\", { value: true });\r\n/**\r\n * the Markdown Replacer class parse a markdown string to a HTML string\r\n */\r\nclass MDReplacer {\r\n    /**\r\n     * ctor\r\n     */\r\n    constructor() {\r\n        /**\r\n         * dictionary with md token and html replacement tags\r\n         */\r\n        this.dictionary = {\r\n            \"## \": {\r\n                start: '<h2>',\r\n                end: '</h2>'\r\n            },\r\n            \"# \": {\r\n                start: '<h1>',\r\n                end: '</h1>'\r\n            },\r\n            \"**\": {\r\n                start: '<b>',\r\n                end: '</b>'\r\n            },\r\n            \"* \": {\r\n                start: '<ul><li>',\r\n                end: '</li></ul>'\r\n            },\r\n            \"*\": {\r\n                start: '<i>',\r\n                end: '</i>'\r\n            },\r\n            \">\": {\r\n                start: '<blockquote><p>',\r\n                end: '</p></blockquote>'\r\n            },\r\n            \" \": {\r\n                start: '<p>',\r\n                end: '</p>'\r\n            }\r\n        };\r\n    }\r\n    /**\r\n     * the replace method splits the string in blocks and parse each line\r\n     * @param input : the whole document as string input\r\n     * @return the parsed input string with all replaced tags\r\n     */\r\n    replace(input) {\r\n        // return if input is empty\r\n        if (input == \"\")\r\n            return \"\";\r\n        let blocks = input.split('\\n');\r\n        let result = \"\";\r\n        for (let line in blocks) {\r\n            for (let key in this.dictionary) {\r\n                while (blocks[line].indexOf(key) !== -1) {\r\n                    if ((key === '>' || key === ' ') && !this.startsWith(blocks[line], key)) {\r\n                        break;\r\n                    }\r\n                    blocks[line] = this.replaceKey(blocks[line], key);\r\n                }\r\n            }\r\n            if (line !== '0') {\r\n                result = result.concat('<br/>');\r\n            }\r\n            result = result.concat(blocks[line]);\r\n        }\r\n        result = this.combineMultiLineTags(result);\r\n        return result;\r\n    }\r\n    /**\r\n     * replace md tokens to html tags\r\n     * @param input: string to parse\r\n     * @param key: token to search\r\n     * @return this method returns the string with the replaced html tags\r\n     */\r\n    replaceKey(input, key) {\r\n        let result = input;\r\n        switch (key) {\r\n            case '**':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            case '*':\r\n                result = this.replaceDouble(result, key);\r\n                break;\r\n            default:\r\n                result = result.replace(key, this.dictionary[key]['start']).concat(this.dictionary[key]['end']);\r\n                break;\r\n        }\r\n        return result;\r\n    }\r\n    /**\r\n     * If the markdown token has a start and end token,\r\n     * we replaces both\r\n     * @param input: string to parse\r\n     * @param key: token to replace\r\n     * @return parsed string with html tag at beginning and ending\r\n     */\r\n    replaceDouble(input, key) {\r\n        let result = input;\r\n        let tmp = result.split(key);\r\n        if (tmp.length % 3 === 0) {\r\n            for (let i = 0; i < 2; i++) {\r\n                if (i === 0) {\r\n                    result = result.replace(key, this.dictionary[key]['start']);\r\n                }\r\n                else {\r\n                    result = result.replace(key, this.dictionary[key]['end']);\r\n                }\r\n            }\r\n        }\r\n        else if (key === '**' && tmp.length === 2) {\r\n            result = this.replaceDouble(result, '*');\r\n        }\r\n        return result;\r\n    }\r\n    /**\r\n     * small helper method to check if the current token is a starting token\r\n     * @param input: string to check\r\n     * @param key: token to check\r\n     * @return the result as boolean, true if it is first else false\r\n     */\r\n    startsWith(input, key) {\r\n        let inputNormalized = input;\r\n        if (key !== ' ') {\r\n            inputNormalized = input.replace(/ /g, '');\r\n        }\r\n        if (inputNormalized.charAt(0) === key) {\r\n            return true;\r\n        }\r\n        return false;\r\n    }\r\n    /**\r\n     * combine multiline list elements to one list\r\n     * @param {string} input: string to parse\r\n     * @return {string} parsed string\r\n     */\r\n    combineMultiLineTags(input) {\r\n        let result = input;\r\n        result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');\r\n        result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');\r\n        return result;\r\n    }\r\n}\r\nexports.MDReplacer = MDReplacer;\r\n//# sourceMappingURL=MDReplacer.js.map",
     "static": true,
     "longname": "src/MDReplacer.js",
     "access": null,
@@ -35,15 +35,8 @@
     "static": false,
     "longname": "src/MDReplacer.js~MDReplacer#constructor",
     "access": null,
-    "description": null,
-    "lineNumber": 7,
-    "undocument": true,
-    "unknown": [
-      {
-        "tagName": "@_undocument",
-        "tagValue": ""
-      }
-    ],
+    "description": "ctor",
+    "lineNumber": 10,
     "params": []
   },
   {
@@ -55,7 +48,7 @@
     "longname": "src/MDReplacer.js~MDReplacer#dictionary",
     "access": null,
     "description": "dictionary with md token and html replacement tags",
-    "lineNumber": 11,
+    "lineNumber": 14,
     "type": {
       "types": [
         "{\"## \": *, \"# \": *, \"**\": *, \"* \": *, \"*\": *, \">\": *, \" \": *}"
@@ -73,7 +66,7 @@
     "longname": "src/MDReplacer.js~MDReplacer#replace",
     "access": null,
     "description": "the replace method splits the string in blocks and parse each line",
-    "lineNumber": 47,
+    "lineNumber": 50,
     "params": [
       {
         "nullable": null,
@@ -106,7 +99,7 @@
     "longname": "src/MDReplacer.js~MDReplacer#replaceKey",
     "access": null,
     "description": "replace md tokens to html tags",
-    "lineNumber": 76,
+    "lineNumber": 79,
     "params": [
       {
         "nullable": null,
@@ -149,7 +142,7 @@
     "longname": "src/MDReplacer.js~MDReplacer#replaceDouble",
     "access": null,
     "description": "If the markdown token has a start and end token,\nwe replaces both",
-    "lineNumber": 98,
+    "lineNumber": 101,
     "params": [
       {
         "nullable": null,
@@ -192,7 +185,7 @@
     "longname": "src/MDReplacer.js~MDReplacer#startsWith",
     "access": null,
     "description": "small helper method to check if the current token is a starting token",
-    "lineNumber": 122,
+    "lineNumber": 125,
     "params": [
       {
         "nullable": null,
@@ -235,7 +228,7 @@
     "longname": "src/MDReplacer.js~MDReplacer#combineMultiLineTags",
     "access": null,
     "description": "combine multiline list elements to one list",
-    "lineNumber": 137,
+    "lineNumber": 140,
     "params": [
       {
         "nullable": null,
