@@ -2,11 +2,11 @@
   "name": "markdowntohtmlparser",
   "version": "1.0.0",
   "description": "simple md to htm parser",
-  "main": "server.js",
+  "main": "./src/server.js",
   "scripts": {
     "test": "jasmine-node spec --autotest --watch . --color --verbose",
-    "start": "node server.ts",
-    "dev": "nodemon server.ts"
+    "start": "node ./src/server.ts",
+    "dev": "nodemon ./src/server.ts"
   },
   "keywords": [],
   "author": "",

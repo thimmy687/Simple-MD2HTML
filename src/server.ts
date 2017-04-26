@@ -2,16 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
-const ps = require(__dirname + '\\src\\MDReplacer.js');
+const ps = require(__dirname + '\\MDReplacer.js');
+const path = require('path');
+
 //member
 var db;
-
 var parser = new ps.MDReplacer();
 
 // make public folder accessible to public
-app.use(express.static(__dirname + '/public'));
-app.use("/css", express.static(__dirname + '/public/css'));
-app.use("/js", express.static(__dirname + '/public/js'));
+app.use(express.static(path.resolve('./public')));
+app.use("/css", express.static(path.resolve('./public/css')));
+app.use("/js", express.static(path.resolve('./public/js')));
 
 //database setup
 MongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-test-db', (err, database) => {
