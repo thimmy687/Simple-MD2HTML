@@ -67,7 +67,7 @@ export class MDReplacer {
             }
             result = result.concat(blocks[line]);            
         }
-        result = this.combineListElements(result);
+        result = this.combineMultiLineTags(result);
         return result; 
     }
 
@@ -131,7 +131,7 @@ export class MDReplacer {
     * combine multiline list elements to one list
     * @param input: string to parse
     */
-    combineListElements(input: string):string{
+    combineMultiLineTags(input: string):string{
         let result = input;
         result = result.replace(new RegExp('</li></ul><br/><ul><li>','g'),'</li><br/><li>') 
         result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>','g'),'</p><br/><p>') 

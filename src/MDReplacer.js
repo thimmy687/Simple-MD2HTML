@@ -63,7 +63,7 @@ var MDReplacer = (function () {
             }
             result = result.concat(blocks[line]);
         }
-        result = this.combineListElements(result);
+        result = this.combineMultiLineTags(result);
         return result;
     };
     /**
@@ -123,7 +123,7 @@ var MDReplacer = (function () {
      * combine multiline list elements to one list
      * @param input: string to parse
      */
-    MDReplacer.prototype.combineListElements = function (input) {
+    MDReplacer.prototype.combineMultiLineTags = function (input) {
         var result = input;
         result = result.replace(new RegExp('</li></ul><br/><ul><li>', 'g'), '</li><br/><li>');
         result = result.replace(new RegExp('</p></blockquote><br/><blockquote><p>', 'g'), '</p><br/><p>');
