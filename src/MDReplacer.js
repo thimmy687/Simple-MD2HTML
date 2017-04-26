@@ -42,6 +42,7 @@ var MDReplacer = (function () {
     /**
      * the replace method splits the string in blocks and parse each line
      * @param input : the whole document as string input
+     * @return the parsed input string with all replaced tags
      */
     MDReplacer.prototype.replace = function (input) {
         // return if input is empty
@@ -70,6 +71,7 @@ var MDReplacer = (function () {
      * replace md tokens to html tags
      * @param input: string to parse
      * @param key: token to search
+     * @return this method returns the string with the replaced html tags
      */
     MDReplacer.prototype.replaceKey = function (input, key) {
         var result = input;
@@ -91,16 +93,23 @@ var MDReplacer = (function () {
      * we replaces both
      * @param input: string to parse
      * @param key: token to replace
+     * @return parsed string with html tag at beginning and ending
      */
     MDReplacer.prototype.replaceDouble = function (input, key) {
         var result = input;
-        for (var i = 0; i < 2; i++) {
-            if (i === 0) {
-                result = result.replace(key, this.dictionary[key]['start']);
+        var tmp = result.split(key);
+        if (tmp.length % 3 === 0) {
+            for (var i = 0; i < 2; i++) {
+                if (i === 0) {
+                    result = result.replace(key, this.dictionary[key]['start']);
+                }
+                else {
+                    result = result.replace(key, this.dictionary[key]['end']);
+                }
             }
-            else {
-                result = result.replace(key, this.dictionary[key]['end']);
-            }
+        }
+        else if (key === '**' && tmp.length === 2) {
+            result = this.replaceDouble(result, '*');
         }
         return result;
     };
@@ -108,6 +117,7 @@ var MDReplacer = (function () {
      * small helper method to check if the current token is a starting token
      * @param input: string to check
      * @param key: token to check
+     * @return the result as boolean, true if it is first else false
      */
     MDReplacer.prototype.startsWith = function (input, key) {
         var inputNormalized = input;
@@ -121,7 +131,8 @@ var MDReplacer = (function () {
     };
     /**
      * combine multiline list elements to one list
-     * @param input: string to parse
+     * @param {string} input: string to parse
+     * @return {string} parsed string
      */
     MDReplacer.prototype.combineMultiLineTags = function (input) {
         var result = input;
