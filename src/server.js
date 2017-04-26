@@ -1,12 +1,37 @@
+"use strict";
+exports.__esModule = true;
+/**
+ * {express} minimal and flexible Node.js web application framework
+ * that provides a robust set of features for web and mobile applications.
+ */
 var express = require('express');
+/**
+ * {bodyParser} Parse incoming request bodies in a middleware
+ * before your handlers, available under the req.body property.
+ */
 var bodyParser = require('body-parser');
+/**
+ * {app} instance of express
+ */
 var app = express();
+/**
+ * {MongoClient} client for database connection
+ */
 var MongoClient = require('mongodb').MongoClient;
-var ps = require(__dirname + '\\MDReplacer.js');
+/**
+ * {path} framework to resolve paths
+ */
 var path = require('path');
+/**
+ * {MDReplacer} MDReplacer instance
+ */
+var MDReplacer_1 = require("./MDReplacer");
 //member
 var db;
-var parser = new ps.MDReplacer();
+/**
+ * instance of MDReplacer
+ */
+var parser = new MDReplacer_1.MDReplacer();
 // make public folder accessible to public
 app.use(express.static(path.resolve('./public')));
 app.use("/css", express.static(path.resolve('./public/css')));
@@ -18,7 +43,7 @@ MongoClient.connect('mongodb://dbuser:dbpassword@ds115131.mlab.com:15131/mongo-t
         return console.log('DB-CONNECTION-ERR: ' + err);
     db = database;
     // set port to listen
-    app.listen(process.env.PORT || 3000, function () {
+    app.listen(normalizePort(process.env.PORT || 3000), function () {
         console.log('listening on 3000');
     });
     //clean history on startup
@@ -92,4 +117,19 @@ app["delete"]('/inputs', function (req, res) {
         res.status(200).send("INFO: history clean!");
     });
 });
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+    return false;
+}
 //# sourceMappingURL=server.js.map
