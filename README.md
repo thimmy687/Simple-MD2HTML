@@ -1,5 +1,5 @@
 # Simple Markdown parser
-[![Document](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML/badge.svg?t=0)](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML)
+[![Document](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML/badge.svg?t=0)](https://doc.esdoc.org/github.com/thimmy687/Simple-MD2HTML) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/933/badge)](https://bestpractices.coreinfrastructure.org/projects/933)
 
     by Ricardo Krause
     
